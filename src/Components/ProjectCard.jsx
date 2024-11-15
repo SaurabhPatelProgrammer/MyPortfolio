@@ -5,7 +5,7 @@ import { RiSignalTowerFill } from "react-icons/ri";
 function ProjectCard() {
   return (
     <div className=" p-4 m-4">
-      <div className=" h-fit w-[300px] md:w-[320px] border-2 border-gray-200  border-opacity-60 rounded-2xl overflow-clip lg:overflow-hidden hover:shadow-md lg:hover:scale-105 transition-all backdrop-blur-3xl shadow-xl">
+      <div className=" h-fit w-[275px]  md:w-[320px] border-2 border-gray-200  border-opacity-60 rounded-2xl overflow-clip lg:overflow-hidden hover:shadow-md lg:hover:scale-105 transition-all backdrop-blur-3xl shadow-xl">
         <a href="">
           <img
             src={aboutday}
