@@ -24,6 +24,7 @@ function ProjectSecton() {
         <ProjectCard />
         <ProjectCard />
         <ProjectCard />
+        <ProjectCard />
       </div>
       <div className=" flex justify-center items-center gap-3 mt-2 select-none">
         <HiArrowSmLeft
