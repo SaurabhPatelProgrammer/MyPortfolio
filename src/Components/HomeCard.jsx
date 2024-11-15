@@ -8,10 +8,6 @@ function HomeCard() {
       <div data-aos="fade-up-right" className="flex flex-col gap-5 lg:w-[50%]">
         <h1 className="text-5xl lg:text-7xl mb-10 gradient-text">Hey!</h1>
         <p className=" text-gray-300 text-xl lg:2xl font-serif  ">
-          {/* Lorem ipsum dolor sit amet consectetur adipisicing elit. Amet, fugit.
-          Dolorem incidunt repellendus, a, quo, rerum magni porro aperiam quis
-          cupiditate nesciunt architecto sed laboriosam pariatur sapiente ipsam
-          quas delectus. */}
           I am Saurabh Verma from Ambedkar Nagar, Uttar Pradesh. I completed my
           12th grade at Chandi Prasad Mishra Akshhay Chanda Rashtriya Inter
           College, Tenduaikalan, Ambedkar Nagar, Uttar Pradesh, and I am

@@ -21,7 +21,7 @@ function ProjectSecton() {
         ref={scrollRef}
         className=" flex overflow-x-scroll gap-8 lg:p-3 scroll-hide"
       >
-        <ProjectCard />
+        <ProjectCard  />
         <ProjectCard />
         <ProjectCard />
         <ProjectCard />

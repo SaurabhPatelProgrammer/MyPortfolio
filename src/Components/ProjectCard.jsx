@@ -1,5 +1,6 @@
 import React from "react";
 import aboutday from "../assets/aboutday.png";
+import socialmedia from "../assets/socialmedia.png";
 import { AiFillGithub } from "react-icons/ai";
 import { RiSignalTowerFill } from "react-icons/ri";
 function ProjectCard() {
@@ -8,19 +9,20 @@ function ProjectCard() {
       <div className=" h-fit w-[275px]  md:w-[320px] border-2 border-gray-200  border-opacity-60 rounded-2xl overflow-clip lg:overflow-hidden hover:shadow-md lg:hover:scale-105 transition-all backdrop-blur-3xl shadow-xl">
         <a href="">
           <img
-            src={aboutday}
+            src={socialmedia}
             alt="project image"
             className=" lg:h-48 h-[200px] w-full object-cover object-center"
           />
         </a>
         <div className=" p-4 flex flex-col lg:gap-3">
           <div className=" ">
-            <h2 className="  tracking-widest text-2xl text-white">About day</h2>
+            <h2 className="  tracking-widest text-2xl text-white">
+              social media
+            </h2>
           </div>
           <h1 className=" text-lg lg:text-xl font-bold text-gray-400 ">
-            Discover our story, mission, and the passionate team behind our
-            brand. Learn how we strive to make a difference in our industry
-            every day
+            An Instagram clone app for sharing your moments, connecting with
+            friends, and exploring the world through photos and videos.
           </h1>
           <div className=" flex items-center justify-between ">
             <a href="#">
