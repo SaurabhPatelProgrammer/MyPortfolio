@@ -15,6 +15,11 @@ const SkillsSections = () => {
         <SkillsCard title={"Python  "} value={50} />
         <SkillsCard title={"Linux  "} value={50} />
         <SkillsCard title={"Git & Github  "} value={60} />
+        <SkillsCard title={"HTML "} value={80} />
+        <SkillsCard title={"CSS  "} value={80} />
+        <SkillsCard title={"JavaScript  "} value={75} />
+        <SkillsCard title={"Tailwind CSS  "} value={60} />
+        <SkillsCard title={"Ethical Hacking  "} value={40} />
       </div>
     </div>
   );
