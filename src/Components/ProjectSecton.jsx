@@ -1,12 +1,13 @@
-import React from "react";
-import ProjectCard from "../Components/ProjectCard";
+import React, { useRef } from "react";
+import ProjectCard from "./ProjectCard";
 import { HiArrowSmLeft, HiArrowSmRight } from "react-icons/hi";
-import { useRef } from "react";
+
 import socialmedia from "../assets/socialmedia.png";
 import aboutday from "../assets/aboutday.png";
 import fullstacktodo from "../assets/fullstacktodo.png";
 import noteselling from "../assets/noteselling.jpg";
-function ProjectSecton() {
+
+export default function ProjectSection() {
   const scrollRef = useRef(null);
 
   const hscrollRight = () => {
@@ -16,59 +17,65 @@ function ProjectSecton() {
   const hscrollLeft = () => {
     scrollRef.current.scrollLeft -= 500;
   };
+
   return (
-    <div data-aos="fade-down" className=" mb-20 lg:mb-36">
-      <h1 className=" text-5xl lg:text-7xl gradient-text mb-10 ">
-        My Projects
-      </h1>
+    <section data-aos="fade-down" className="mb-20 lg:mb-36">
+      <h1 className="text-5xl lg:text-7xl gradient-text mb-10">My Projects</h1>
+
+      {/* SCROLLABLE CARD ROW */}
       <div
         ref={scrollRef}
-        className=" flex overflow-x-scroll gap-8 lg:p-3 scroll-hide"
+        className="flex overflow-x-scroll gap-8 p-3 scroll-hide"
       >
         <ProjectCard
           image={socialmedia}
-          title={"social media"}
-          des={
-            " An Instagram clone app for sharing your moments, connecting withfriends, and exploring the world through photos and videos"
-          }
+          title="Social Media App"
+          des="An Instagram-like app for sharing moments, connecting with friends, and exploring creative posts. Fully responsive with modern UI."
+          github="#"
+          live="#"
         />
+
         <ProjectCard
           image={fullstacktodo}
-          title={"fullStack TODO "}
-          des={
-            "A full-stack to-do app for managing tasks, prioritizing goals, and boosting productivity across multiple devices seamlessly"
-          }
+          title="FullStack TODO App"
+          des="A complete MERN TODO app with login, task management, smooth UI, API support, authentication, role-based access and more."
+          github="#"
+          live="#"
         />
+
         <ProjectCard
           image={noteselling}
-          title={"Notes Sell"}
-          des={
-            "A platform for selling and buying academic notes, connecting students and facilitating access to quality educational resources."
-          }
+          title="Notes Selling Platform"
+          des="A platform for buying and selling academic notes, allowing students to upload, manage and download study materials securely."
+          github="#"
+          live="#"
         />
+
         <ProjectCard
           image={aboutday}
-          title={"about day"}
-          des={
-            "An app to help users track, plan, and celebrate each day with unique themes and activities, making everyday special."
-          }
+          title="About Day App"
+          des="Track and plan your day with themed activities, reminders, and a clean UI. A daily motivation and productivity boosting app."
+          github="#"
+          live="#"
         />
       </div>
-      <div className=" flex justify-center items-center gap-3 mt-2 select-none">
+
+      {/* SCROLL ARROWS */}
+      <div className="flex justify-center items-center gap-3 mt-2 select-none">
         <HiArrowSmLeft
           onClick={hscrollLeft}
-          className=" text-xl lg:text-2xl cursor-pointer text-yellow-500 hidden lg:block"
+          className="text-2xl cursor-pointer text-yellow-500 hidden lg:block"
         />
-        <h2 className="gradient-text font-mono text-lg uppercase ">
+
+        <h2 className="gradient-text font-mono text-lg uppercase">
           Slide for more
         </h2>
+
         <HiArrowSmRight
           onClick={hscrollRight}
-          className=" text-xl lg:text-2xl cursor-pointer text-yellow-500 hidden lg:block"
+          className="text-2xl cursor-pointer text-yellow-500 hidden lg:block"
         />
       </div>
-    </div>
+    </section>
   );
 }
-
-export default ProjectSecton;
