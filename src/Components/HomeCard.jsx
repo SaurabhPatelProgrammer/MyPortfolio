@@ -4,74 +4,107 @@ import resume from "../assets/resume.pdf";
 
 export default function HomeCard() {
   return (
-    <section className="flex flex-col lg:flex-row gap-10 justify-between items-center mb-20 lg:mb-36">
+    <section className="w-full text-white pt-10 pb-20">
 
-      {/* LEFT SIDE CONTENT */}
-      <div data-aos="fade-up-right" className="flex flex-col gap-6 lg:w-[50%]">
+      {/* HEADER */}
+      <div className="flex justify-between items-center mb-12">
+        <h1 className="text-xl font-semibold tracking-wide">Saurabh Pat</h1>
 
-        {/* Greeting */}
-        <h1 className="text-5xl lg:text-7xl gradient-text font-extrabold tracking-wide">
-          Hey, I'm Saurabh
-        </h1>
+        <button className="
+          px-5 py-2 rounded-xl
+          bg-gradient-to-r from-blue-500 to-purple-500 
+          text-white font-semibold shadow-lg shadow-purple-400/20
+          hover:scale-105 transition-all
+        ">
+          Hire Me
+        </button>
+      </div>
 
-        {/* Short Intro */}
-        <p className="text-gray-300 text-lg font-light leading-relaxed">
-          I’m a <span className="text-purple-400 font-semibold">Web Developer </span> 
-          and <span className="text-purple-400 font-semibold"> Cybersecurity Enthusiast </span> 
-          from Uttar Pradesh. I design and build modern, secure, and user-friendly web applications.
-        </p>
+      {/* MAIN CENTER CONTENT */}
+      <div className="flex flex-col items-center text-center gap-6">
 
-        {/* Professional Highlight Card */}
-        <div className="bg-white/5 border border-white/10 backdrop-blur-xl p-4 rounded-xl shadow-lg">
-          <p className="text-gray-300 text-base leading-relaxed">
-            With experience in <span className="text-pink-400">UI/UX design</span>, 
-            <span className="text-pink-400"> full-stack development</span>, 
-            and <span className="text-pink-400">digital security</span>,  
-            I combine creativity with technical expertise to build 
-            impactful digital solutions. I'm currently pursuing BCA in 
-            Cybersecurity & Digital Forensics at BBD University.
+        {/* MAIN TITLE */}
+        <h2 className="
+          text-4xl md:text-5xl lg:text-6xl font-extrabold 
+          bg-gradient-to-r from-blue-300 via-blue-200 to-purple-300 
+          text-transparent bg-clip-text leading-tight tracking-wide
+        ">
+          Building Digital <br />
+          Products for <br />
+          Ambitious Businesses
+        </h2>
+
+        {/* CTA BUTTON */}
+        <a href="#contact">
+          <button className="
+            px-8 py-3 text-lg rounded-xl 
+            bg-white/10 border border-white/20 backdrop-blur-lg
+            hover:bg-white/20 transition-all
+          ">
+            Discuss <span className="text-blue-300">Your Project</span>
+          </button>
+        </a>
+      </div>
+
+      {/* BOTTOM SECTION */}
+      <div className="mt-16 grid grid-cols-1 lg:grid-cols-3 gap-10">
+
+        {/* ABOUT CARD */}
+        <div className="
+          bg-white/5 border border-white/10 backdrop-blur-xl 
+          p-6 rounded-2xl shadow-lg flex flex-col items-start gap-4
+        ">
+          <div className="w-20 h-20 bg-white/5 rounded-full flex items-center justify-center">
+            <img src={patel} alt="profile" className="w-full h-full object-cover rounded-full" />
+          </div>
+
+          <div>
+            <h3 className="text-xl font-semibold mb-1">About Me</h3>
+            <p className="text-gray-300">
+              Saurabh Patel <br />
+              Freelance Software Engineer specializing in SaaS, AI, and modern Web Apps.
+            </p>
+          </div>
+
+          <div className="text-sm text-gray-400 mt-3 space-y-1">
+            <p>email@example.com</p>
+            <p>github.com/saurabh</p>
+          </div>
+
+          <div className="flex gap-3 text-sm mt-3">
+            <span className="px-3 py-1 rounded-full bg-white/10">React</span>
+            <span className="px-3 py-1 rounded-full bg-white/10">AI</span>
+            <span className="px-3 py-1 rounded-full bg-white/10">Electron</span>
+          </div>
+        </div>
+
+        {/* CUSTOM SAAS SOLUTIONS */}
+        <div className="
+          bg-white/5 border border-white/10 backdrop-blur-xl 
+          p-6 rounded-2xl shadow-lg flex flex-col justify-between
+        ">
+          <div className="text-5xl mb-4">💻</div>
+          <h3 className="text-xl font-semibold">
+            Custom <span className="text-blue-300">SaaS</span> Solutions
+          </h3>
+          <p className="text-gray-300 mt-2">
+            End-to-end SaaS product development tailored for modern businesses.
           </p>
         </div>
 
-        {/* Buttons */}
-        <div className="flex flex-row gap-4 mt-3">
-          <a href={resume} download>
-            <button className="
-              px-5 py-3 bg-gradient-to-r from-blue-600 to-purple-600
-              rounded-lg text-white font-semibold shadow-lg 
-              hover:scale-105 hover:shadow-purple-500/30 transition-all
-            ">
-              Download CV
-            </button>
-          </a>
-
-          <a href="#contact">
-            <button className="
-              px-5 py-3 border border-purple-400 text-purple-300 
-              font-semibold rounded-lg hover:bg-purple-500/20 
-              hover:scale-105 transition-all backdrop-blur-md
-            ">
-              Contact Me
-            </button>
-          </a>
-        </div>
-      </div>
-
-      {/* RIGHT SIDE IMAGE */}
-      <div data-aos="fade-up-left" className="relative group">
+        {/* AI AUTOMATION */}
         <div className="
-          absolute inset-0 bg-gradient-to-br from-purple-600/30 to-pink-400/30 
-          rounded-full blur-2xl opacity-70 group-hover:opacity-100 transition-all
-        "></div>
-
-        <img
-          src={patel}
-          alt="Saurabh Verma"
-          className="
-            relative w-[260px] h-[260px] lg:w-[420px] lg:h-[420px]
-            rounded-3xl  shadow-2xl border border-white/20 
-          "
-        />
+          bg-white/5 border border-white/10 backdrop-blur-xl 
+          p-6 rounded-2xl shadow-lg flex flex-col justify-between
+        ">
+          <div className="text-5xl mb-4">🤖</div>
+          <h3 className="text-xl font-semibold">
+            AI-Powered Automation
+          </h3>
+          <p className="text-gray-300 mt-2">
+            Smarter workflows using AI tools, intelligent systems & automation pipelines.
+          </p>
+        </div>
       </div>
 
     </section>
