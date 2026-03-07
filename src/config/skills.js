@@ -1,22 +1,28 @@
+// Skills config — no percentage levels, just categories & tech badges
 export const skills = [
   // Frontend
-  { name: 'React',        level: 90, category: 'Frontend', icon: '⚛️' },
-  { name: 'JavaScript',   level: 88, category: 'Frontend', icon: '🟨' },
-  { name: 'Tailwind CSS', level: 92, category: 'Frontend', icon: '🎨' },
-  { name: 'Three.js',     level: 70, category: 'Frontend', icon: '🎯' },
+  { name: 'React',        category: 'Frontend',  icon: '⚛️',  color: 'from-cyan-500/20 to-blue-500/20',     border: 'border-cyan-500/30'    },
+  { name: 'JavaScript',   category: 'Frontend',  icon: '🟨',  color: 'from-yellow-500/20 to-amber-500/20',  border: 'border-yellow-500/30'  },
+  { name: 'Tailwind CSS', category: 'Frontend',  icon: '🎨',  color: 'from-teal-500/20 to-cyan-500/20',     border: 'border-teal-500/30'    },
+  { name: 'Three.js',     category: 'Frontend',  icon: '🎯',  color: 'from-indigo-500/20 to-violet-500/20', border: 'border-indigo-500/30'  },
+  { name: 'Vite',         category: 'Frontend',  icon: '⚡',  color: 'from-purple-500/20 to-pink-500/20',   border: 'border-purple-500/30'  },
   // Backend
-  { name: 'Node.js',      level: 82, category: 'Backend',  icon: '🟢' },
-  { name: 'Express',      level: 80, category: 'Backend',  icon: '🚂' },
-  { name: 'MongoDB',      level: 78, category: 'Backend',  icon: '🍃' },
-  { name: 'Python',       level: 85, category: 'AI/ML',    icon: '🐍' },
-  // AI/ML
-  { name: 'TensorFlow',   level: 72, category: 'AI/ML',    icon: '🧠' },
-  { name: 'OpenCV',       level: 75, category: 'AI/ML',    icon: '👁️' },
-  { name: 'LangChain',    level: 68, category: 'AI/ML',    icon: '🔗' },
+  { name: 'Node.js',      category: 'Backend',   icon: '🟢',  color: 'from-green-500/20 to-emerald-500/20', border: 'border-green-500/30'   },
+  { name: 'Express',      category: 'Backend',   icon: '🚂',  color: 'from-slate-500/20 to-gray-500/20',    border: 'border-slate-500/30'   },
+  { name: 'MongoDB',      category: 'Backend',   icon: '🍃',  color: 'from-emerald-500/20 to-green-500/20', border: 'border-emerald-500/30' },
+  { name: 'REST APIs',    category: 'Backend',   icon: '🔗',  color: 'from-blue-500/20 to-indigo-500/20',   border: 'border-blue-500/30'    },
+  // AI / ML
+  { name: 'Python',       category: 'AI / ML',   icon: '🐍',  color: 'from-blue-600/20 to-yellow-500/20',   border: 'border-blue-500/30'    },
+  { name: 'TensorFlow',   category: 'AI / ML',   icon: '🧠',  color: 'from-orange-500/20 to-red-500/20',    border: 'border-orange-500/30'  },
+  { name: 'OpenCV',       category: 'AI / ML',   icon: '👁️', color: 'from-violet-500/20 to-indigo-500/20', border: 'border-violet-500/30'  },
+  { name: 'LangChain',    category: 'AI / ML',   icon: '⛓️', color: 'from-lime-500/20 to-green-500/20',    border: 'border-lime-500/30'    },
   // IoT
-  { name: 'Raspberry Pi', level: 80, category: 'IoT',      icon: '🖥️' },
-  { name: 'Arduino',      level: 78, category: 'IoT',      icon: '🔌' },
+  { name: 'Raspberry Pi', category: 'IoT',       icon: '🖥️', color: 'from-red-500/20 to-rose-500/20',      border: 'border-red-500/30'     },
+  { name: 'Arduino',      category: 'IoT',       icon: '🔌',  color: 'from-cyan-500/20 to-teal-500/20',     border: 'border-cyan-500/30'    },
+  { name: 'MQTT',         category: 'IoT',       icon: '📡',  color: 'from-sky-500/20 to-blue-500/20',      border: 'border-sky-500/30'     },
 ];
+
+export const skillCategories = ['All', 'Frontend', 'Backend', 'AI / ML', 'IoT'];
 
 export const services = [
   {
