@@ -4,16 +4,16 @@ import Navbar from '@components/layout/Navbar';
 import Footer from '@components/layout/Footer';
 import LoadingScreen from '@components/ui/LoadingScreen';
 import InquiryModal from '@components/ui/InquiryModal';
+import Chatbot from '@components/ui/Chatbot';
 import { ModalProvider } from '@hooks/useModal';
 
-// Lazy load all pages for code splitting
-const Home         = lazy(() => import('@pages/Home'));
-const About        = lazy(() => import('@pages/About'));
-const Projects     = lazy(() => import('@pages/Projects'));
+const Home          = lazy(() => import('@pages/Home'));
+const About         = lazy(() => import('@pages/About'));
+const Projects      = lazy(() => import('@pages/Projects'));
 const ProjectDetail = lazy(() => import('@pages/ProjectDetail'));
-const Services     = lazy(() => import('@pages/Services'));
-const Contact      = lazy(() => import('@pages/Contact'));
-const NotFound     = lazy(() => import('@pages/NotFound'));
+const Services      = lazy(() => import('@pages/Services'));
+const Contact       = lazy(() => import('@pages/Contact'));
+const NotFound      = lazy(() => import('@pages/NotFound'));
 
 export default function App() {
   return (
@@ -23,17 +23,19 @@ export default function App() {
           <Navbar />
           <Suspense fallback={<LoadingScreen />}>
             <Routes>
-              <Route path="/"              element={<Home />} />
-              <Route path="/about"         element={<About />} />
-              <Route path="/projects"      element={<Projects />} />
-              <Route path="/projects/:id"  element={<ProjectDetail />} />
-              <Route path="/services"      element={<Services />} />
-              <Route path="/contact"       element={<Contact />} />
-              <Route path="*"              element={<NotFound />} />
+              <Route path="/"             element={<Home />} />
+              <Route path="/about"        element={<About />} />
+              <Route path="/projects"     element={<Projects />} />
+              <Route path="/projects/:id" element={<ProjectDetail />} />
+              <Route path="/services"     element={<Services />} />
+              <Route path="/contact"      element={<Contact />} />
+              <Route path="*"             element={<NotFound />} />
             </Routes>
           </Suspense>
           <Footer />
           <InquiryModal />
+          {/* 🤖 AI Chatbot — visible on all pages */}
+          <Chatbot />
         </div>
       </BrowserRouter>
     </ModalProvider>
