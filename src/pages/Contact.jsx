@@ -4,6 +4,8 @@ import SectionHeading from '@components/ui/SectionHeading';
 import { siteConfig } from '@config/meta';
 import { Github, Linkedin, Twitter, Mail, MapPin, Send, CheckCircle2 } from 'lucide-react';
 
+const API = import.meta.env.VITE_API_URL || 'http://localhost:5000';
+
 const socials = [
   { icon: Github,   label: 'GitHub',   href: siteConfig.github,   username: 'SaurabhPatelProgrammer' },
   { icon: Linkedin, label: 'LinkedIn', href: siteConfig.linkedin,  username: 'saurabhpatel'          },
@@ -14,11 +16,30 @@ const socials = [
 export default function Contact() {
   const [form, setForm] = useState({ name: '', email: '', subject: '', message: '' });
   const [sent, setSent]   = useState(false);
+  const [loading, setLoading] = useState(false);
+  const [error, setError] = useState('');
+
   const handle = e => setForm(f => ({ ...f, [e.target.name]: e.target.value }));
-  const submit = e => {
+
+  const submit = async e => {
     e.preventDefault();
-    // TODO: POST /api/contact
-    setSent(true);
+    setLoading(true);
+    setError('');
+    try {
+      const res = await fetch(`${API}/api/contact`, {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify(form)
+      });
+      const data = await res.json();
+      if (!res.ok) throw new Error(data.error || 'Failed to submit contact request');
+      setSent(true);
+      setForm({ name: '', email: '', subject: '', message: '' });
+    } catch (err) {
+      setError(err.message || 'Error establishing connection with neural uplink server.');
+    } finally {
+      setLoading(false);
+    }
   };
 
   return (
@@ -53,8 +74,9 @@ export default function Contact() {
                   className="w-full bg-white/5 border border-white/10 rounded-xl px-4 py-3 text-sm text-white placeholder-gray-500 focus:outline-none focus:border-indigo-500 transition-colors" />
                 <textarea name="message" value={form.message} onChange={handle} required rows={5} placeholder="Your message..."
                   className="w-full bg-white/5 border border-white/10 rounded-xl px-4 py-3 text-sm text-white placeholder-gray-500 focus:outline-none focus:border-indigo-500 transition-colors resize-none" />
-                <button type="submit" className="w-full btn-primary flex items-center justify-center gap-2">
-                  <Send size={16} /> Send Message
+                {error && <p className="text-red-400 text-xs font-mono">{error}</p>}
+                <button type="submit" disabled={loading} className="w-full btn-primary flex items-center justify-center gap-2">
+                  <Send size={16} /> {loading ? 'Sending Uplink...' : 'Send Message'}
                 </button>
               </form>
             )}

@@ -1,14 +1,16 @@
-import { useEffect, useRef, useState } from 'react';
+import { useState, useEffect, useRef } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
 import { ArrowDown, Sparkles, Code2, Brain } from 'lucide-react';
 import { Link } from 'react-router-dom';
 import HeroCanvas from '@components/three/HeroCanvas';
 import SectionHeading from '@components/ui/SectionHeading';
 import ProjectCard from '@components/ui/ProjectCard';
-import { projects } from '@config/projects';
+import { projects as fallbackProjects } from '@config/projects';
 import { skills, skillCategories, services } from '@config/skills';
 import { useModal } from '@hooks/useModal';
 import { useTypewriter } from '@hooks/useTypewriter';
+
+const API = import.meta.env.VITE_API_URL || 'http://localhost:5000';
 
 const stats = [
   { value: '2+',  label: 'Years Experience' },
@@ -22,6 +24,38 @@ export default function Home() {
   const typed = useTypewriter(['AI Engineer', 'Full-Stack Dev', 'IoT Builder', 'Problem Solver'], 80, 2200);
   const statsRef = useRef(null);
   const [activeSkillCat, setActiveSkillCat] = useState('All');
+  const [projects, setProjects] = useState([]);
+
+  useEffect(() => {
+    fetch(`${API}/api/projects`)
+      .then(res => res.json())
+      .then(data => {
+        if (data && data.length > 0) {
+          const mapped = data.map(p => ({
+            id: p._id,
+            title: p.title,
+            tagline: p.tagline,
+            description: p.description,
+            tags: p.tags,
+            category: p.category,
+            featured: p.featured,
+            status: p.status,
+            year: '2026',
+            tech: p.tags,
+            github: p.githubUrl || '',
+            demo: p.liveUrl || '',
+            color: p.category === 'AI' ? 'from-violet-600 to-indigo-600' : p.category === 'IoT' ? 'from-amber-600 to-orange-600' : 'from-emerald-600 to-teal-600',
+            icon: p.icon || '🚀'
+          }));
+          setProjects(mapped);
+        } else {
+          setProjects(fallbackProjects);
+        }
+      })
+      .catch(() => {
+        setProjects(fallbackProjects);
+      });
+  }, []);
 
   const filteredSkills = activeSkillCat === 'All'
     ? skills
@@ -148,7 +182,7 @@ export default function Home() {
         </div>
       </section>
 
-      {/* ===== SKILLS — Redesigned: No progress bars, filterable glowing tech cards ===== */}
+      {/* ===== SKILLS ===== */}
       <section className="section-padding max-w-7xl mx-auto px-6">
         <SectionHeading tag="Tech Stack" title="Skills & Technologies"
           subtitle="Technologies I work with across frontend, backend, AI/ML, and IoT." />
@@ -167,7 +201,7 @@ export default function Home() {
           ))}
         </div>
 
-        {/* Skills Grid — Beautiful glow cards, no percentage bars */}
+        {/* Skills Grid */}
         <motion.div layout className="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 lg:grid-cols-5 gap-4">
           <AnimatePresence>
             {filteredSkills.map((skill, i) => (

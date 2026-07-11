@@ -5,6 +5,7 @@ import Footer from '@components/layout/Footer';
 import LoadingScreen from '@components/ui/LoadingScreen';
 import InquiryModal from '@components/ui/InquiryModal';
 import Chatbot from '@components/ui/Chatbot';
+import CustomCursor from '@components/ui/CustomCursor';
 import { ModalProvider } from '@hooks/useModal';
 
 const Home           = lazy(() => import('@pages/Home'));
@@ -22,6 +23,7 @@ export default function App() {
     <ModalProvider>
       <BrowserRouter>
         <Suspense fallback={<LoadingScreen />}>
+          <CustomCursor />
           <Routes>
             {/* ── Admin (standalone, no navbar/footer) ── */}
             <Route path="/admin" element={<AdminDashboard />} />
