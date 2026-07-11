@@ -1,11 +1,57 @@
+import { useState, useEffect } from 'react';
 import { useParams, Link } from 'react-router-dom';
 import { motion } from 'framer-motion';
 import { ArrowLeft, Github, ExternalLink, Calendar, Tag } from 'lucide-react';
-import { projects } from '@config/projects';
+import { projects as fallbackProjects } from '@config/projects';
+
+const API = import.meta.env.VITE_API_URL || 'http://localhost:5000';
 
 export default function ProjectDetail() {
   const { id } = useParams();
-  const project = projects.find(p => p.id === id);
+  const [project, setProject] = useState(null);
+  const [loading, setLoading] = useState(true);
+
+  useEffect(() => {
+    // Attempt dynamic fetch via list
+    fetch(`${API}/api/projects`)
+      .then(res => res.json())
+      .then(data => {
+        const found = data.find(p => p._id === id);
+        if (found) {
+          setProject({
+            id: found._id,
+            title: found.title,
+            tagline: found.tagline,
+            description: found.description,
+            tags: found.tags,
+            category: found.category,
+            featured: found.featured,
+            status: found.status,
+            year: new Date(found.createdAt).getFullYear().toString() || '2026',
+            tech: found.tags,
+            github: found.githubUrl || '',
+            demo: found.liveUrl || '',
+            color: found.category === 'AI' ? 'from-violet-600 to-indigo-600' : found.category === 'IoT' ? 'from-amber-600 to-orange-600' : 'from-emerald-600 to-teal-600',
+            icon: found.icon || '🚀'
+          });
+        } else {
+          // Check fallbacks
+          const localFound = fallbackProjects.find(p => p.id === id);
+          setProject(localFound || null);
+        }
+      })
+      .catch(() => {
+        const localFound = fallbackProjects.find(p => p.id === id);
+        setProject(localFound || null);
+      })
+      .finally(() => setLoading(false));
+  }, [id]);
+
+  if (loading) return (
+    <main className="pt-28 pb-20 text-center font-mono text-indigo-400">
+      Loading project metadata details...
+    </main>
+  );
 
   if (!project) return (
     <main className="pt-28 pb-20 text-center">
@@ -22,7 +68,7 @@ export default function ProjectDetail() {
             <ArrowLeft size={16} /> Back to Projects
           </Link>
 
-          <div className={`h-1 w-full rounded-full bg-gradient-to-r ${project.color} mb-8`} />
+          <div className={`h-1 w-full rounded-full bg-gradient-to-r ${project.color || 'from-indigo-500 to-purple-500'} mb-8`} />
 
           <div className="flex items-start justify-between flex-wrap gap-4 mb-6">
             <div>
@@ -54,7 +100,7 @@ export default function ProjectDetail() {
           <div className="card-glass mb-8">
             <h2 className="text-white font-bold text-lg mb-4">Tech Stack</h2>
             <div className="flex flex-wrap gap-3">
-              {project.tech.map(t => (
+              {(project.tech || []).map(t => (
                 <span key={t} className="px-3 py-1.5 rounded-xl glass border border-indigo-500/20 text-indigo-300 text-sm">{t}</span>
               ))}
             </div>
