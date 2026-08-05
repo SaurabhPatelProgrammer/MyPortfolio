@@ -1,19 +1,22 @@
 import { defineConfig } from 'vite';
 import react from '@vitejs/plugin-react';
 import path from 'path';
+import { fileURLToPath } from 'url';
+
+const projectRoot = path.dirname(fileURLToPath(import.meta.url));
 
 export default defineConfig({
   plugins: [react()],
   resolve: {
     alias: {
-      '@': path.resolve(__dirname, './src'),
-      '@components': path.resolve(__dirname, './src/components'),
-      '@pages': path.resolve(__dirname, './src/pages'),
-      '@sections': path.resolve(__dirname, './src/sections'),
-      '@hooks': path.resolve(__dirname, './src/hooks'),
-      '@utils': path.resolve(__dirname, './src/utils'),
-      '@config': path.resolve(__dirname, './src/config'),
-      '@assets': path.resolve(__dirname, './src/assets'),
+      '@': path.resolve(projectRoot, './src'),
+      '@components': path.resolve(projectRoot, './src/components'),
+      '@pages': path.resolve(projectRoot, './src/pages'),
+      '@sections': path.resolve(projectRoot, './src/sections'),
+      '@hooks': path.resolve(projectRoot, './src/hooks'),
+      '@utils': path.resolve(projectRoot, './src/utils'),
+      '@config': path.resolve(projectRoot, './src/config'),
+      '@assets': path.resolve(projectRoot, './src/assets'),
     },
   },
   build: {
@@ -23,7 +26,7 @@ export default defineConfig({
           vendor: ['react', 'react-dom'],
           router: ['react-router-dom'],
           three: ['three', '@react-three/fiber', '@react-three/drei'],
-          animation: ['gsap', 'framer-motion'],
+          animation: ['framer-motion'],
         },
       },
     },

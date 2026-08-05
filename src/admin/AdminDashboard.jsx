@@ -1,6 +1,6 @@
 import { useState, useEffect } from 'react';
 import { motion } from 'framer-motion';
-import { LayoutDashboard, Mail, Briefcase, FolderKanban, MessageSquare, LogOut, Menu, X, Zap, Bell } from 'lucide-react';
+import { LayoutDashboard, Mail, Briefcase, FolderKanban, MessageSquare, LogOut, Menu, Zap } from 'lucide-react';
 import AdminLogin from './AdminLogin';
 
 const API = import.meta.env.VITE_API_URL || 'http://localhost:5000';

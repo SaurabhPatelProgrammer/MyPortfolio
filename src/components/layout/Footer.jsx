@@ -1,72 +1,42 @@
+import { ArrowUpRight, BrainCircuit, Github, Linkedin, Mail } from 'lucide-react';
 import { Link } from 'react-router-dom';
-import { Github, Linkedin, Twitter, Zap, Mail, ArrowUpRight } from 'lucide-react';
-import { siteConfig } from '@config/meta';
+import { navigation, siteConfig } from '@config/meta';
 
 export default function Footer() {
-  const year = new Date().getFullYear();
   return (
-    <footer className="border-t border-white/8 bg-[#08080f]">
-      <div className="max-w-7xl mx-auto px-6 py-16">
-        <div className="grid grid-cols-1 md:grid-cols-4 gap-10">
-          {/* Brand */}
-          <div className="md:col-span-2">
-            <div className="flex items-center gap-2 mb-4">
-              <div className="w-8 h-8 rounded-lg bg-indigo-600 flex items-center justify-center">
-                <Zap size={16} className="text-white" />
-              </div>
-              <span className="font-bold text-lg text-white">{siteConfig.name}</span>
-            </div>
-            <p className="text-gray-400 text-sm leading-relaxed max-w-xs">
-              AI & Full-Stack Engineer building intelligent digital products for ambitious businesses.
-            </p>
-            <div className="flex gap-4 mt-6">
-              {[
-                { icon: Github,   href: siteConfig.github   },
-                { icon: Linkedin, href: siteConfig.linkedin  },
-                { icon: Twitter,  href: siteConfig.twitter   },
-                { icon: Mail,     href: `mailto:${siteConfig.email}` },
-              ].map(({ icon: Icon, href }, i) => (
-                <a key={i} href={href} target="_blank" rel="noopener noreferrer"
-                  className="w-10 h-10 rounded-xl glass flex items-center justify-center text-gray-400 hover:text-white hover:border-indigo-500/50 transition-all">
-                  <Icon size={16} />
-                </a>
-              ))}
+    <footer className="border-t border-white/10 bg-[#060a12]">
+      <div className="site-container py-10 md:py-14">
+        <div className="grid gap-12 border-b border-white/10 pb-12 md:grid-cols-[1.4fr_0.6fr_0.6fr]">
+          <div>
+            <Link to="/" className="mb-5 inline-flex items-center gap-3">
+              <span className="grid h-10 w-10 place-items-center rounded-full bg-[#a78bfa] font-['Manrope'] text-sm font-extrabold text-[#090611] shadow-[0_0_28px_rgba(167,139,250,.2)]">SP</span>
+              <span className="font-['Manrope'] font-bold">{siteConfig.name}</span>
+            </Link>
+            <p className="max-w-md text-base leading-7 text-[#8f968c]">Software developer with a BCA in Cyber Security &amp; Forensics, building full-stack products and practical AI experiences.</p>
+            <a href={`mailto:${siteConfig.email}`} className="button-quiet mt-5 gap-2">{siteConfig.email} <ArrowUpRight size={14} /></a>
+          </div>
+
+          <div>
+            <p className="mb-4 text-xs font-bold uppercase tracking-[0.15em] text-[#5f655d]">Explore</p>
+            <div className="flex flex-col gap-3">
+              {navigation.map(item => <Link key={item.path} to={item.path} className="text-sm text-[#9ca297] transition hover:text-white">{item.label}</Link>)}
             </div>
           </div>
 
-          {/* Links */}
           <div>
-            <h4 className="text-white font-semibold mb-4">Navigation</h4>
-            <ul className="space-y-2">
-              {[['/', 'Home'], ['/about', 'About'], ['/projects', 'Projects'], ['/services', 'Services'], ['/contact', 'Contact']].map(([to, label]) => (
-                <li key={to}>
-                  <Link to={to} className="text-gray-400 hover:text-white text-sm transition-colors flex items-center gap-1 group">
-                    {label}<ArrowUpRight size={12} className="opacity-0 group-hover:opacity-100 transition-opacity" />
-                  </Link>
-                </li>
-              ))}
-            </ul>
-          </div>
-
-          {/* Contact */}
-          <div>
-            <h4 className="text-white font-semibold mb-4">Get In Touch</h4>
-            <div className="space-y-3">
-              <a href={`mailto:${siteConfig.email}`} className="text-gray-400 hover:text-white text-sm transition-colors block">
-                {siteConfig.email}
-              </a>
-              <p className="text-gray-400 text-sm">{siteConfig.location}</p>
-              <div className="flex items-center gap-2 mt-2">
-                <span className="w-2 h-2 rounded-full bg-green-400 animate-pulse" />
-                <span className="text-green-400 text-xs font-medium">Available for projects</span>
-              </div>
+            <p className="mb-4 text-xs font-bold uppercase tracking-[0.15em] text-[#5f655d]">Connect</p>
+            <div className="flex flex-col gap-3">
+              <a href={siteConfig.github} target="_blank" rel="noreferrer" className="flex items-center gap-2 text-sm text-[#9ca297] transition hover:text-white"><Github size={14} /> GitHub</a>
+              <a href={siteConfig.linkedin} target="_blank" rel="noreferrer" className="flex items-center gap-2 text-sm text-[#9ca297] transition hover:text-white"><Linkedin size={14} /> LinkedIn</a>
+              <a href={siteConfig.huggingface} target="_blank" rel="noreferrer" className="flex items-center gap-2 text-sm text-[#9ca297] transition hover:text-white"><BrainCircuit size={14} /> Hugging Face</a>
+              <a href={`mailto:${siteConfig.email}`} className="flex items-center gap-2 text-sm text-[#9ca297] transition hover:text-white"><Mail size={14} /> Email</a>
             </div>
           </div>
         </div>
 
-        <div className="border-t border-white/8 mt-12 pt-6 flex flex-col md:flex-row justify-between items-center gap-4">
-          <p className="text-gray-500 text-sm">&copy; {year} {siteConfig.name}. All rights reserved.</p>
-          <p className="text-gray-500 text-sm">Built with React + Three.js + GSAP</p>
+        <div className="flex flex-col gap-3 pt-7 text-xs text-[#626861] sm:flex-row sm:items-center sm:justify-between">
+          <p>© {new Date().getFullYear()} Saurabh Patel. Built in Uttar Pradesh, India.</p>
+          <p>React · Three.js · Framer Motion</p>
         </div>
       </div>
     </footer>

@@ -1,117 +1,96 @@
 import { motion } from 'framer-motion';
+import { ArrowUpRight, Github, MapPin, Sparkles } from 'lucide-react';
+import profileImage from '@assets/patel-optimized.jpg';
 import SectionHeading from '@components/ui/SectionHeading';
+import { skillGroups } from '@config/skills';
 import { siteConfig } from '@config/meta';
-import { skills } from '@config/skills';
-import { MapPin, Calendar, Coffee, Rocket } from 'lucide-react';
+import { useModal } from '@hooks/useModal';
+import { usePageMeta } from '@hooks/usePageMeta';
 
 const timeline = [
-  { year: '2022', title: 'Started Coding Journey', desc: 'Began with Python and fell in love with building things.' },
-  { year: '2023', title: 'First Web Projects',    desc: 'Built MERN stack apps, freelance clients, and learned React deeply.' },
-  { year: '2024', title: 'Entered AI & IoT',      desc: 'Explored computer vision, LLMs, Raspberry Pi, and robotics.' },
-  { year: '2025', title: 'Portfolio & SHYRA',     desc: 'Launched personal brand website. Started building SHYRA AI assistant.' },
-  { year: '2026', title: 'Going Deep on AI',      desc: 'Full focus on AI systems, LangChain agents, and startup products.' },
+  { year: 'Stage 01', title: 'Programming foundations', description: 'Started with Python and learned to turn small ideas into working scripts and interfaces.' },
+  { year: 'Stage 02', title: 'Full-stack development', description: 'Expanded into React and MERN-oriented applications, connecting frontend flows with APIs and data.' },
+  { year: 'Stage 03', title: 'Applied systems', description: 'Explored AI-oriented software, computer vision concepts, and connected-device development.' },
+  { year: 'Current', title: 'Public builds and deeper practice', description: 'Developing SHYRA as a modular AI experiment while improving this portfolio and publishing stronger project evidence.' },
+];
+
+const values = [
+  ['Ownership', 'Treat the product and its outcome as my responsibility, not just the assigned ticket.'],
+  ['Clarity', 'Reduce complexity until the problem, decision, and next step become obvious.'],
+  ['Craft', 'Care about the details users feel and the architecture future developers inherit.'],
+  ['Momentum', 'Ship in useful increments, learn quickly, and keep the work moving forward.'],
 ];
 
 export default function About() {
+  const { open } = useModal();
+  usePageMeta('About — Saurabh Patel', 'Meet Saurabh Patel, a software developer from Ambedkar Nagar with a BCA in Cyber Security and Forensics.');
+
   return (
-    <main className="pt-28 pb-20">
-      <div className="max-w-7xl mx-auto px-6">
-        <SectionHeading
-          tag="About Me"
-          title="The Story Behind the Code"
-          subtitle="I am Saurabh Patel — an AI & Full-Stack engineer from India, building the future one project at a time."
-        />
-
-        {/* Bio Grid */}
-        <div className="grid grid-cols-1 lg:grid-cols-2 gap-12 mb-20">
-          <motion.div
-            initial={{ opacity: 0, x: -30 }}
-            whileInView={{ opacity: 1, x: 0 }}
-            viewport={{ once: true }}
-          >
-            <div className="space-y-4 text-gray-300 leading-relaxed text-base">
-              <p>
-                I started coding out of pure curiosity and quickly became obsessed with building intelligent systems.
-                My work spans <span className="text-indigo-300 font-medium">AI, full-stack web apps, IoT, and robotics</span> —
-                fields that I believe are converging to reshape how we live and work.
-              </p>
-              <p>
-                My flagship project, <span className="text-cyan-300 font-medium">SHYRA</span>, is an AI personal assistant
-                with vision, voice, and memory capabilities. It represents everything I am passionate about —
-                blending AI, hardware, and software into a cohesive intelligent system.
-              </p>
-              <p>
-                I approach every project like a founder: with ownership, precision, and a relentless focus on
-                shipping high-quality work that creates real value.
-              </p>
-            </div>
-            <div className="grid grid-cols-2 gap-4 mt-8">
-              {[
-                { icon: MapPin,   text: 'India'                  },
-                { icon: Calendar, text: '2+ Years Building'      },
-                { icon: Coffee,   text: 'Chai-Powered Dev ☕'     },
-                { icon: Rocket,   text: 'Startup Mindset'        },
-              ].map(({ icon: Icon, text }, i) => (
-                <div key={i} className="card-glass flex items-center gap-3">
-                  <Icon size={16} className="text-indigo-400" />
-                  <span className="text-sm text-gray-300">{text}</span>
-                </div>
-              ))}
-            </div>
-          </motion.div>
-
-          {/* Vision Box */}
-          <motion.div
-            initial={{ opacity: 0, x: 30 }}
-            whileInView={{ opacity: 1, x: 0 }}
-            viewport={{ once: true }}
-            className="glass-strong rounded-2xl p-8 border border-indigo-500/20"
-          >
-            <h3 className="text-xl font-bold gradient-text mb-4">Vision & Mission</h3>
-            <p className="text-gray-300 leading-relaxed mb-6">
-              To build AI-powered products that are not just technically impressive — but genuinely useful,
-              accessible, and transformative for businesses and individuals.
-            </p>
-            <div className="space-y-3">
-              {[
-                '🤖 Making AI accessible to every business',
-                '🌐 Building global-standard products from India',
-                '🔌 Merging physical and digital with IoT',
-                '🚀 Shipping fast, iterating faster',
-              ].map((item, i) => (
-                <div key={i} className="flex items-center gap-3 text-sm text-gray-300">
-                  <span>{item}</span>
-                </div>
-              ))}
-            </div>
-          </motion.div>
+    <main className="pb-20 pt-32 md:pt-40">
+      <section className="site-container">
+        <span className="eyebrow mb-6">About</span>
+        <div className="grid items-end gap-8 lg:grid-cols-[1.25fr_0.75fr]">
+          <motion.h1 initial={{ opacity: 0, y: 30 }} animate={{ opacity: 1, y: 0 }} className="page-title text-balance">Engineer by craft.<br /><span className="text-[#7d857a]">Builder by instinct.</span></motion.h1>
+          <motion.p initial={{ opacity: 0, y: 20 }} animate={{ opacity: 1, y: 0 }} transition={{ delay: 0.15 }} className="max-w-lg text-base leading-7 text-[#959c91] md:text-lg md:leading-8">I am Saurabh, a software developer from Ambedkar Nagar who enjoys connecting difficult technical pieces into products that feel simple.</motion.p>
         </div>
+      </section>
 
-        {/* Timeline */}
-        <SectionHeading tag="Journey" title="My Timeline" />
-        <div className="relative">
-          <div className="absolute left-4 md:left-1/2 top-0 bottom-0 w-px bg-gradient-to-b from-indigo-500 via-cyan-500 to-transparent" />
-          <div className="space-y-10">
-            {timeline.map((item, i) => (
-              <motion.div
-                key={i}
-                initial={{ opacity: 0, y: 30 }}
-                whileInView={{ opacity: 1, y: 0 }}
-                viewport={{ once: true }}
-                transition={{ delay: i * 0.1 }}
-                className={`relative flex ${i % 2 === 0 ? 'md:justify-start' : 'md:justify-end'} pl-12 md:pl-0`}
-              >
-                <div className="absolute left-2 md:left-1/2 w-4 h-4 rounded-full bg-indigo-500 border-2 border-indigo-300 -translate-x-1/2 md:mt-2" />
-                <div className={`card-glass w-full md:w-5/12 ${i % 2 !== 0 ? 'md:mr-8' : 'md:ml-8'}`}>
-                  <span className="text-indigo-400 text-xs font-mono">{item.year}</span>
-                  <h4 className="text-white font-bold mt-1 mb-1">{item.title}</h4>
-                  <p className="text-gray-400 text-sm">{item.desc}</p>
-                </div>
+      <section className="section-space site-container">
+        <div className="grid gap-5 lg:grid-cols-[0.8fr_1.2fr]">
+          <motion.div initial={{ opacity: 0, scale: 0.96 }} whileInView={{ opacity: 1, scale: 1 }} viewport={{ once: true }} className="panel relative min-h-[32rem] overflow-hidden">
+            <img src={profileImage} alt="Saurabh Patel" className="absolute inset-0 h-full w-full object-cover object-top grayscale" />
+            <div className="absolute inset-0 bg-gradient-to-t from-[#090b0f] via-transparent to-transparent" />
+            <div className="absolute inset-x-0 bottom-0 p-7">
+              <div className="inline-flex items-center gap-2 rounded-full border border-white/10 bg-black/50 px-3 py-2 text-xs backdrop-blur-md"><MapPin size={13} className="text-[#fb7185]" /> {siteConfig.location}</div>
+            </div>
+          </motion.div>
+
+          <div className="panel p-7 md:p-10 lg:p-12">
+            <span className="mb-8 inline-flex h-12 w-12 items-center justify-center rounded-2xl bg-[#a78bfa]/10 text-[#a78bfa]"><Sparkles size={19} /></span>
+            <h2 className="text-3xl font-semibold leading-tight md:text-5xl">Curiosity became a habit of building.</h2>
+            <div className="mt-8 max-w-2xl space-y-5 text-base leading-7 text-[#a1a79e]">
+              <p>I started with Python because I wanted to understand how software could automate small pieces of life. That curiosity quickly expanded into web products, AI systems, computer vision, and connected devices.</p>
+              <p>I hold a BCA focused on Cyber Security &amp; Forensics. That foundation adds a security-aware mindset to the way I design interfaces, APIs, authentication, data flows, and complete software products.</p>
+              <p>Today, I work across the product stack. I can shape an interface, design an API, think through the data model, connect an AI workflow, and still care deeply about whether the final experience feels clear.</p>
+              <p>SHYRA represents that direction as a public, evolving AI experiment with body, brain, server, voice, memory, and vision modules.</p>
+            </div>
+            <div className="mt-9 flex flex-wrap gap-3"><button onClick={open} className="button-primary">Discuss a role or project <ArrowUpRight size={16} /></button><a href={siteConfig.github} target="_blank" rel="noreferrer" className="button-secondary"><Github size={15} /> View GitHub</a></div>
+          </div>
+        </div>
+      </section>
+
+      <section className="section-space border-y border-white/10 bg-[#100e19]">
+        <div className="site-container">
+          <SectionHeading tag="Principles" title="How I show up in the work." subtitle="Technical skill matters. The way a product gets built matters just as much." />
+          <div className="grid gap-px overflow-hidden rounded-[2rem] border border-white/10 bg-white/10 md:grid-cols-2">
+            {values.map(([title, description], index) => (
+              <motion.div key={title} initial={{ opacity: 0 }} whileInView={{ opacity: 1 }} viewport={{ once: true }} transition={{ delay: index * 0.08 }} className="bg-[#100e19] p-7 md:p-9">
+                <span className="font-mono text-xs text-[#fb7185]">0{index + 1}</span><h3 className="mt-10 text-2xl font-semibold">{title}</h3><p className="mt-3 max-w-md text-sm leading-6 text-[#8f968c]">{description}</p>
               </motion.div>
             ))}
           </div>
         </div>
-      </div>
+      </section>
+
+      <section className="section-space site-container">
+        <SectionHeading tag="Journey" title="A path shaped by curiosity." />
+        <div className="border-t border-white/10">
+          {timeline.map(item => (
+            <motion.div key={item.year} initial={{ opacity: 0, y: 18 }} whileInView={{ opacity: 1, y: 0 }} viewport={{ once: true }} className="grid gap-4 border-b border-white/10 py-7 sm:grid-cols-[8rem_1fr] md:grid-cols-[10rem_0.8fr_1.2fr] md:items-start md:py-9">
+              <span className="font-mono text-xs text-[#fb7185]">{item.year}</span><h3 className="text-xl font-semibold">{item.title}</h3><p className="max-w-xl text-sm leading-6 text-[#8f968c]">{item.description}</p>
+            </motion.div>
+          ))}
+        </div>
+      </section>
+
+      <section className="section-space border-y border-white/10 bg-[#100e19]">
+        <div className="site-container">
+          <SectionHeading tag="Capabilities" title="Comfortable across the stack." />
+          <div className="grid gap-5 md:grid-cols-2">
+            {skillGroups.map(({ title, icon: Icon, items }) => <div key={title} className="panel p-6 md:p-8"><div className="mb-6 flex items-center gap-3"><span className="grid h-10 w-10 place-items-center rounded-xl bg-[#a78bfa]/[0.08] text-[#a78bfa]"><Icon size={17} /></span><h3 className="text-xl font-semibold">{title}</h3></div><div className="flex flex-wrap gap-2">{items.map(item => <span key={item} className="rounded-full border border-white/10 px-3 py-1.5 text-xs text-[#9ca398]">{item}</span>)}</div></div>)}
+          </div>
+        </div>
+      </section>
     </main>
   );
 }
