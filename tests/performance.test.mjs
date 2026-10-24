@@ -21,6 +21,42 @@ function load(file, mocks = {}, globals = {}) {
 
 const disposal = load('src/components/Character/utils/disposeObject.ts', { three: THREE });
 
+test('a character render failure dismisses the splash and hides only the 3D view', () => {
+  let released = 0;
+  const Boundary = load('src/components/Character/CharacterBoundary.tsx', {}, { console: { warn() {} } }).default;
+  const boundary = new Boundary({ children: '3D view', onFailure: () => released++ });
+  assert.equal(boundary.render(), '3D view');
+  boundary.state = Boundary.getDerivedStateFromError(new Error('WebGL failed'));
+  boundary.componentDidCatch(new Error('WebGL failed'), { componentStack: '' });
+  assert.equal(released, 1);
+  assert.equal(boundary.render(), null);
+});
+
+test('a stalled 3D load releases the splash screen after three seconds and unlocks scrolling', () => {
+  let expire, delay, cleared = false, cleanup;
+  const values = [];
+  let stateIndex = 0;
+  const document = { body: { style: {} } };
+  const Provider = load('src/context/LoadingProvider.tsx', {
+    react: { useState: initial => [initial, value => values.push(value)], useEffect: setup => { cleanup = setup(); } },
+    '../components/ui/Loading': () => null,
+    './loadingContext': { LoadingContext: { Provider: 'provider' } },
+  }, { document, window: { setTimeout: (callback, ms) => { expire = callback; delay = ms; return 1; } }, clearTimeout: () => { cleared = true; } }).LoadingProvider;
+  Provider({ children: null });
+  assert.equal(delay, 3000);
+  expire();
+  assert.deepEqual(values, [100]);
+  cleanup();
+  assert(cleared);
+  const Ready = load('src/context/LoadingProvider.tsx', {
+    react: { useState: () => [stateIndex++ === 0 ? false : 100, () => {}], useEffect: setup => setup() },
+    '../components/ui/Loading': () => null,
+    './loadingContext': { LoadingContext: { Provider: 'provider' } },
+  }, { document, window: {} }).LoadingProvider;
+  Ready({ children: null });
+  assert.equal(document.body.style.overflowY, 'auto');
+});
+
 test('shared GPU resources are disposed once, including maps shared by materials', () => {
   const texture = new THREE.Texture();
   const geometry = new THREE.SphereGeometry();

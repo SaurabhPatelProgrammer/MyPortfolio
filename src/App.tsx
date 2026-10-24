@@ -1,22 +1,26 @@
-import { lazy, Suspense } from "react";
+import { lazy, Suspense, useCallback } from "react";
 import "./styles/App.css";
 
 const CharacterModel = lazy(() => import("./components/Character/Scene"));
-const MainContainer = lazy(() => import("./components/MainContainer"));
+import MainContainer from "./components/MainContainer";
+import CharacterBoundary from "./components/Character/CharacterBoundary";
+import { useLoading } from "./context/loadingContext";
 import { LoadingProvider } from "./context/LoadingProvider";
 
-const Fallback = () => <div style={{ minHeight: "100vh" }} aria-hidden="true" />;
+const Portfolio = () => {
+  const { setLoading } = useLoading();
+  const showContent = useCallback(() => setLoading(100), [setLoading]);
+  return <MainContainer>
+    <CharacterBoundary onFailure={showContent}>
+      <Suspense fallback={null}><CharacterModel /></Suspense>
+    </CharacterBoundary>
+  </MainContainer>;
+};
 
 const App = () => {
   return (
     <LoadingProvider>
-      <Suspense fallback={<Fallback />}>
-        <MainContainer>
-          <Suspense fallback={null}>
-            <CharacterModel />
-          </Suspense>
-        </MainContainer>
-      </Suspense>
+      <Portfolio />
     </LoadingProvider>
   );
 };
