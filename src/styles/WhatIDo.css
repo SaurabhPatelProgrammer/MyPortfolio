@@ -37,7 +37,7 @@
   height: clamp(560px, 72vh, 640px);
   margin-left: 200px;
   position: relative;
-  display: none;
+  display: flex;
 }
 /* Cards share the column with flex-grow, so an expanded card always gets
    room for all of its content instead of being clipped by a fixed height. */

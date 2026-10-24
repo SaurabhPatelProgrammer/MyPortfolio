@@ -11,6 +11,8 @@ for (const p of projects) {
 }
 const resume = fs.readFileSync('public/resume/Saurabh_Patel.pdf');
 assert.equal(resume.subarray(0, 5).toString(), '%PDF-');
+const techs = JSON.parse(fs.readFileSync('src/data/tech-stack.json', 'utf8'));
+for (const tech of techs) assert(fs.existsSync(`public${tech.image}`), `Missing technology icon: ${tech.image}`);
 const htmlFiles = ['index.html', ...fs.readdirSync('public').filter(f => f.endsWith('.html')).map(f => `public/${f}`)];
 for (const file of htmlFiles) {
   const html = fs.readFileSync(file, 'utf8');

@@ -37,7 +37,7 @@ h6,
   font-optical-sizing: auto;
   font-style: normal;
   line-height: 1.5;
-  scroll-behavior: smooth;
+  scroll-behavior: auto;
   color: var(--fg);
   background-color: var(--backgroundColor);
 
@@ -49,8 +49,7 @@ h6,
   -webkit-user-select: none;
   -moz-user-select: none;
 
-  /* RGB cycle: --accentHue is rewritten every frame by rgbCycle.ts.
-     Everything below re-resolves automatically with each update. */
+  /* A stable accent avoids repainting text, shadows and gradients every frame. */
   --accentHue: 270;
   --accentColor: hsl(var(--accentHue), 80%, 75%);
   --accentLight: hsl(var(--accentHue), 95%, 82%);
@@ -228,4 +227,12 @@ body {
     font-size: 28px;
     top: 10px;
   }
+}
+.tech-fallback { display: flex; flex-wrap: wrap; justify-content: center; align-content: center; gap: 12px; width: min(850px, 90%); height: 100%; margin: auto; padding-top: 100px; box-sizing: border-box; }
+.tech-fallback span { padding: 8px 14px; border: 1px solid var(--line); border-radius: 30px; font-size: 14px; background: var(--backgroundColor); }
+.techstack h2 { z-index: 1; pointer-events: none; }
+.tech-canvas { position: absolute !important; inset: 0; }
+.tech-scene { height: 100%; position: relative; }
+@media (prefers-reduced-motion: reduce) {
+  *, *::before, *::after { animation-duration: 0.01ms !important; animation-iteration-count: 1 !important; transition-duration: 0.01ms !important; }
 }

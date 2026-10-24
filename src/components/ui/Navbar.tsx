@@ -12,25 +12,22 @@ gsap.registerPlugin(ScrollSmoother, ScrollTrigger);
 
 const Navbar = () => {
   useEffect(() => {
-    const smoother = ScrollSmoother.create({
-      wrapper: "#smooth-wrapper",
-      content: "#smooth-content",
-      smooth: 1.2,
-      speed: 1,
-      effects: true,
-      autoResize: true,
-      ignoreMobileResize: true,
+    const media = gsap.matchMedia();
+    media.add("(min-width: 1025px) and (pointer: fine) and (prefers-reduced-motion: no-preference)", () => {
+      const smoother = ScrollSmoother.create({
+        wrapper: "#smooth-wrapper", content: "#smooth-content",
+        smooth: 0.6, effects: false, autoResize: true, ignoreMobileResize: true,
+      });
+      setSmoother(smoother);
+      return () => { smoother.kill(); setSmoother(null); };
     });
-    setSmoother(smoother);
-
-    smoother.scrollTop(0);
-    smoother.paused(true);
 
     const links = document.querySelectorAll<HTMLAnchorElement>(".header ul a");
     const linkBindings: Array<{ el: HTMLAnchorElement; fn: EventListener }> = [];
     links.forEach((element) => {
       const fn: EventListener = (e) => {
-        if (window.innerWidth > 1024) {
+        const smoother = getSmoother();
+        if (smoother) {
           e.preventDefault();
           const target = e.currentTarget as HTMLAnchorElement;
           const section = target.getAttribute("data-href");
@@ -42,14 +39,9 @@ const Navbar = () => {
       linkBindings.push({ el: element, fn });
     });
 
-    const onResize = () => ScrollSmoother.refresh(true);
-    window.addEventListener("resize", onResize);
-
     return () => {
-      window.removeEventListener("resize", onResize);
       linkBindings.forEach(({ el, fn }) => el.removeEventListener("click", fn));
-      smoother.kill();
-      setSmoother(null);
+      media.revert();
     };
   }, []);
   return (

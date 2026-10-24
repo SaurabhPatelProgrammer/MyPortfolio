@@ -1,4 +1,4 @@
-import { useLayoutEffect } from "react";
+import { useLayoutEffect, useRef } from "react";
 import "../../styles/Work.css";
 import WorkImage from "./WorkImage";
 import gsap from "gsap";
@@ -8,66 +8,30 @@ import { projects } from "../../data/projects";
 gsap.registerPlugin(ScrollTrigger);
 
 const Work = () => {
+  const sectionRef = useRef<HTMLDivElement>(null);
   useLayoutEffect(() => {
-    // Only enable horizontal scroll animation on desktop (> 1024px)
-    if (window.innerWidth <= 1024) {
-      return; // Skip horizontal scroll on mobile
-    }
-
-    let translateX: number = 0;
-
-    function setTranslateX() {
-      const box = document.getElementsByClassName("work-box");
-      const rectLeft = document
-        .querySelector(".work-container")!
-        .getBoundingClientRect().left;
-      const rect = box[0].getBoundingClientRect();
-      const parentWidth = box[0].parentElement!.getBoundingClientRect().width;
-      const padding: number =
-        parseInt(window.getComputedStyle(box[0]).padding) / 2;
-      translateX = rect.width * box.length - (rectLeft + parentWidth) + padding;
-    }
-
-    setTranslateX();
-
-    const timeline = gsap.timeline({
-      scrollTrigger: {
-        trigger: ".work-section",
-        start: "top top",
-        end: `+=${translateX}`, // Use actual scroll width
-        scrub: true,
-        pin: true,
-        pinSpacing: true,
-        anticipatePin: 1,
-        id: "work",
-        onEnter: () => {
-          document.querySelector(".work-section")?.classList.add("work-pinned");
+    const section = sectionRef.current;
+    if (!section) return;
+    const media = gsap.matchMedia();
+    media.add("(min-width: 1025px) and (pointer: fine) and (prefers-reduced-motion: no-preference)", () => {
+      const container = section.querySelector<HTMLElement>(".work-container")!;
+      const track = section.querySelector<HTMLElement>(".work-flex")!;
+      section.classList.add("work-horizontal");
+      const distance = () => Math.max(0, track.scrollWidth - container.clientWidth + parseFloat(getComputedStyle(track).marginLeft || "0"));
+      gsap.to(track, {
+        x: () => -distance(), ease: "none",
+        scrollTrigger: {
+          trigger: section, start: "top top", end: () => "+=" + Math.max(1, distance()),
+          scrub: true, pin: true, anticipatePin: 1, invalidateOnRefresh: true, id: "work",
+          onToggle: self => section.classList.toggle("work-pinned", self.isActive),
         },
-        onLeave: () => {
-          document.querySelector(".work-section")?.classList.remove("work-pinned");
-        },
-        onEnterBack: () => {
-          document.querySelector(".work-section")?.classList.add("work-pinned");
-        },
-        onLeaveBack: () => {
-          document.querySelector(".work-section")?.classList.remove("work-pinned");
-        },
-      },
-    });
-
-    timeline.to(".work-flex", {
-      x: -translateX,
-      ease: "none",
-    });
-
-    // Clean up on unmount
-    return () => {
-      timeline.kill();
-      ScrollTrigger.getById("work")?.kill();
-    };
+      });
+      return () => section.classList.remove("work-horizontal", "work-pinned");
+    }, section);
+    return () => media.revert();
   }, []);
   return (
-    <div className="work-section" id="work">
+    <div className="work-section" id="work" ref={sectionRef}>
       <div className="work-container section-container">
         <h2>
           My <span>Work</span>

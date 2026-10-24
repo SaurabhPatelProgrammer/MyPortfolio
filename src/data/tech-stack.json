@@ -1,0 +1,50 @@
+[
+  {
+    "label": "React",
+    "image": "/images/tech-stack/SiReact.svg"
+  },
+  {
+    "label": "Next.js",
+    "image": "/images/tech-stack/SiNextdotjs.svg"
+  },
+  {
+    "label": "Node.js",
+    "image": "/images/tech-stack/SiNodedotjs.svg"
+  },
+  {
+    "label": "Express",
+    "image": "/images/tech-stack/SiExpress.svg"
+  },
+  {
+    "label": "MongoDB",
+    "image": "/images/tech-stack/SiMongodb.svg"
+  },
+  {
+    "label": "C++",
+    "image": "/images/tech-stack/SiCplusplus.svg"
+  },
+  {
+    "label": "TypeScript",
+    "image": "/images/tech-stack/SiTypescript.svg"
+  },
+  {
+    "label": "JavaScript",
+    "image": "/images/tech-stack/SiJavascript.svg"
+  },
+  {
+    "label": "Python",
+    "image": "/images/tech-stack/SiPython.svg"
+  },
+  {
+    "label": "Linux",
+    "image": "/images/tech-stack/SiLinux.svg"
+  },
+  {
+    "label": "Docker",
+    "image": "/images/tech-stack/SiDocker.svg"
+  },
+  {
+    "label": "Three.js",
+    "image": "/images/tech-stack/SiThreedotjs.svg"
+  }
+]

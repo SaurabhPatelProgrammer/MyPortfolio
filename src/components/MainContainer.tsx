@@ -1,4 +1,4 @@
-import { lazy, PropsWithChildren, Suspense, useEffect, useState } from "react";
+import { PropsWithChildren, useEffect, useState } from "react";
 import About from "./sections/About";
 import Career from "./sections/Career";
 import Contact from "./sections/Contact";
@@ -13,25 +13,39 @@ import Process from "./sections/Process";
 import Credentials from "./sections/Credentials";
 import Cta from "./sections/Cta";
 import setSplitText from "../utils/splitText";
-
-const TechStack = lazy(() => import("./sections/TechStack"));
+import { setAllTimeline } from "../utils/GsapScroll";
+import { initialFX } from "../utils/initialFX";
+import { useLoading } from "../context/loadingContext";
+import DeferredTechStack from "./sections/DeferredTechStack";
 
 const MainContainer = ({ children }: PropsWithChildren) => {
+  const { isLoading } = useLoading();
   const [isDesktopView, setIsDesktopView] = useState<boolean>(
-    window.innerWidth > 1024
+    window.matchMedia("(min-width: 1025px) and (prefers-reduced-motion: no-preference)").matches
   );
 
   useEffect(() => {
-    const resizeHandler = () => {
-      setSplitText();
-      setIsDesktopView(window.innerWidth > 1024);
-    };
-    resizeHandler();
-    window.addEventListener("resize", resizeHandler);
-    return () => {
-      window.removeEventListener("resize", resizeHandler);
-    };
+    const desktop = window.matchMedia("(min-width: 1025px) and (prefers-reduced-motion: no-preference)");
+    const update = () => setIsDesktopView(desktop.matches);
+    desktop.addEventListener("change", update);
+    return () => desktop.removeEventListener("change", update);
   }, []);
+
+  useEffect(() => {
+    let cancelled = false;
+    let cleanupText: (() => void) | undefined;
+    let cleanupCareer: (() => void) | undefined;
+    document.fonts.ready.then(() => {
+      if (cancelled) return;
+      cleanupText = setSplitText();
+      cleanupCareer = setAllTimeline();
+    });
+    return () => { cancelled = true; cleanupText?.(); cleanupCareer?.(); };
+  }, []);
+
+  useEffect(() => {
+    if (!isLoading) return initialFX();
+  }, [isLoading]);
 
   return (
     <div className="container-main">
@@ -50,9 +64,7 @@ const MainContainer = ({ children }: PropsWithChildren) => {
             <Process />
             <Credentials />
             <Work />
-            <Suspense fallback={<div>Loading....</div>}>
-              <TechStack />
-            </Suspense>
+            <DeferredTechStack />
             <Cta />
             <Contact />
           </div>

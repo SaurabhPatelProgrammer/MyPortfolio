@@ -4,257 +4,130 @@ import setCharacter from "./utils/character";
 import setLighting from "./utils/lighting";
 import { useLoading } from "../../context/loadingContext";
 import handleResize from "./utils/resizeUtils";
-import {
-  handleMouseMove,
-  handleTouchEnd,
-  handleHeadRotation,
-  handleTouchMove,
-} from "./utils/mouseUtils";
+import { handleMouseMove, handleHeadRotation } from "./utils/mouseUtils";
 import setAnimations from "./utils/animationUtils";
-import { setProgress } from "../../utils/loadingProgress";
+import { disposeObject } from "./utils/disposeObject";
+import { setCharTimeline } from "../../utils/GsapScroll";
 
 const Scene = () => {
-  const canvasDiv = useRef<HTMLDivElement | null>(null);
+  const canvasDiv = useRef<HTMLDivElement>(null);
   const hoverDivRef = useRef<HTMLDivElement>(null);
-  const sceneRef = useRef(new THREE.Scene());
   const { setLoading } = useLoading();
 
   useEffect(() => {
     const container = canvasDiv.current;
     if (!container) return;
-
-    const rect = container.getBoundingClientRect();
-    const aspect = rect.width / rect.height;
-    const scene = sceneRef.current;
-
+    const controller = new AbortController();
+    const scene = new THREE.Scene();
     let renderer: THREE.WebGLRenderer;
     try {
-      renderer = new THREE.WebGLRenderer({
-        alpha: true,
-        antialias: true,
-        powerPreference: "high-performance",
-      });
+      renderer = new THREE.WebGLRenderer({ alpha: true, antialias: window.innerWidth > 768 });
     } catch {
-      // Keep the portfolio readable on devices without WebGL support.
       setLoading(100);
       return;
     }
-    renderer.setSize(rect.width, rect.height);
-    // Cap DPR: 3x phones would render 9x the pixels for no visible gain.
-    renderer.setPixelRatio(Math.min(window.devicePixelRatio, 2));
+    renderer.setPixelRatio(Math.min(window.devicePixelRatio, window.innerWidth <= 768 ? 1 : 1.5));
     renderer.toneMapping = THREE.ACESFilmicToneMapping;
     renderer.toneMappingExposure = 1;
     container.appendChild(renderer.domElement);
-    const onContextLost = (e: Event) => e.preventDefault();
-    const onContextRestored = () => renderer.setSize(container.clientWidth, container.clientHeight);
-    renderer.domElement.addEventListener("webglcontextlost", onContextLost);
-    renderer.domElement.addEventListener("webglcontextrestored", onContextRestored);
-
-    const camera = new THREE.PerspectiveCamera(14.5, aspect, 0.1, 1000);
+    const camera = new THREE.PerspectiveCamera(14.5, 1, 0.1, 1000);
     camera.position.set(0, 13.1, 24.7);
     camera.zoom = 1.1;
-    camera.updateProjectionMatrix();
+    handleResize(renderer, camera, container);
+    const resize = new ResizeObserver(() => {
+      handleResize(renderer, camera, container);
+      if (reduced.matches) resume();
+    });
+    resize.observe(container);
 
-    let headBone: THREE.Object3D | null = null;
-    let screenLight: THREE.Mesh | null = null;
-    let mixer: THREE.AnimationMixer | undefined;
-    let loadedCharacter: THREE.Object3D | null = null;
-    let hoverCleanup: (() => void) | void;
-
+    const reduced = window.matchMedia("(prefers-reduced-motion: reduce)");
+    const light = setLighting(scene, controller.signal, () => resume());
     const clock = new THREE.Clock();
-    const light = setLighting(scene);
-    const progress = setProgress((value) => setLoading(value));
-    const { loadCharacter } = setCharacter(renderer, scene, camera);
-
-    const reducedMotion = window.matchMedia(
-      "(prefers-reduced-motion: reduce)"
-    ).matches;
-
-    let mouse = { x: 0, y: 0 };
-    let interpolation = { x: 0.1, y: 0.2 };
-    let touchDebounce: number | undefined;
-    let touchMoveHandler: ((e: TouchEvent) => void) | null = null;
-    let touchMoveTarget: HTMLElement | null = null;
-
-    const onMouseMove = (event: MouseEvent) => {
-      handleMouseMove(event, (x, y) => (mouse = { x, y }));
-    };
-
-    const onTouchStart = (event: TouchEvent) => {
-      const element = event.target as HTMLElement;
-      touchDebounce = window.setTimeout(() => {
-        touchMoveHandler = (e: TouchEvent) =>
-          handleTouchMove(e, (x, y) => (mouse = { x, y }));
-        touchMoveTarget = element;
-        element.addEventListener("touchmove", touchMoveHandler);
-      }, 200);
-    };
-
-    const onTouchEnd = () => {
-      if (touchMoveHandler && touchMoveTarget) {
-        touchMoveTarget.removeEventListener("touchmove", touchMoveHandler);
-        touchMoveHandler = null;
-        touchMoveTarget = null;
-      }
-      handleTouchEnd((x, y, interpolationX, interpolationY) => {
-        mouse = { x, y };
-        interpolation = { x: interpolationX, y: interpolationY };
-      });
-    };
-
-    document.addEventListener("mousemove", onMouseMove);
-    const landingDiv = document.getElementById("landingDiv");
-    if (landingDiv) {
-      landingDiv.addEventListener("touchstart", onTouchStart);
-      landingDiv.addEventListener("touchend", onTouchEnd);
-    }
-
-    // Debounced resize
-    let resizeTimer: number | undefined;
-    let lastWidth = window.innerWidth;
-    const onResize = () => {
-      if (resizeTimer) clearTimeout(resizeTimer);
-      resizeTimer = window.setTimeout(() => {
-        if (window.innerWidth === lastWidth) return;
-        lastWidth = window.innerWidth;
-        if (loadedCharacter) {
-          handleResize(renderer, camera, canvasDiv, loadedCharacter);
-        }
-      }, 150);
-    };
-    window.addEventListener("resize", onResize);
-
-    // IntersectionObserver to pause the render loop when offscreen
-    let isVisible = true;
-    const io = new IntersectionObserver(
-      (entries) => {
-        entries.forEach((entry) => {
-          isVisible = entry.isIntersecting;
-        });
-      },
-      { rootMargin: "100px" }
-    );
-    io.observe(container);
-
-    loadCharacter()
-      .then((gltf) => {
-        if (!gltf) return null;
-        try {
-          const animations = setAnimations(gltf);
-          if (hoverDivRef.current) {
-            hoverCleanup = animations.hover(hoverDivRef.current);
-          }
-          mixer = animations.mixer;
-          const character = gltf.scene;
-          loadedCharacter = character;
-          scene.add(character);
-          headBone = character.getObjectByName("spine006") || null;
-          const sl = character.getObjectByName("screenlight");
-          screenLight = (sl as THREE.Mesh) || null;
-          return animations;
-        } catch {
-          return null;
-        }
-      })
-      .catch(() => null)
-      // Always finish the progress bar, even if loading or setup failed,
-      // so the user is never stuck at the splash screen.
-      .then((animations) => {
-        progress.loaded().then(() => {
-          setTimeout(
-            () => {
-              light.turnOnLights();
-              if (animations && !reducedMotion) animations.startIntro();
-            },
-            reducedMotion ? 0 : 2500
-          );
-        });
-      });
-
+    let animations: ReturnType<typeof setAnimations> | undefined;
+    let head: THREE.Object3D | undefined;
+    let screen: THREE.Mesh | undefined;
+    let cleanupTimeline: (() => void) | undefined;
+    let cleanupHover: (() => void) | undefined;
     let rafId = 0;
-    const animate = () => {
-      rafId = requestAnimationFrame(animate);
-      if (!isVisible) return; // skip work when offscreen
-      if (headBone) {
-        handleHeadRotation(
-          headBone,
-          mouse.x,
-          mouse.y,
-          interpolation.x,
-          interpolation.y,
-          THREE.MathUtils.lerp
-        );
-        if (screenLight) light.setPointLight(screenLight);
+    let visible = true;
+    let mouse = { x: 0, y: 0 };
+
+    const render = () => {
+      rafId = 0;
+      if (controller.signal.aborted || !visible || document.hidden) return;
+      const delta = Math.min(clock.getDelta(), 0.05);
+      if (!reduced.matches) {
+        animations?.mixer.update(delta);
+        if (head) handleHeadRotation(head, mouse.x, mouse.y,
+          1 - Math.pow(0.9, delta * 60), 1 - Math.pow(0.8, delta * 60), THREE.MathUtils.lerp);
       }
-      // Clamp so a background-tab pause never makes the animation jump.
-      const delta = Math.min(clock.getDelta(), 0.1);
-      if (mixer) mixer.update(delta);
+      if (screen) light.setPointLight(screen);
       renderer.render(scene, camera);
+      if (!reduced.matches) rafId = requestAnimationFrame(render);
     };
-    animate();
+    const resume = () => {
+      cancelAnimationFrame(rafId);
+      clock.getDelta();
+      render();
+    };
+    const observer = new IntersectionObserver(entries => {
+      visible = entries[0].isIntersecting;
+      resume();
+    }, { rootMargin: "100px" });
+    observer.observe(container);
+    document.addEventListener("visibilitychange", resume);
+    reduced.addEventListener("change", resume);
+    const onPointerMove = (event: PointerEvent) => {
+      if (visible && !reduced.matches) handleMouseMove(event, (x, y) => { mouse = { x, y }; });
+    };
+    window.addEventListener("pointermove", onPointerMove, { passive: true });
+
+    const onContextLost = (event: Event) => { event.preventDefault(); cancelAnimationFrame(rafId); };
+    renderer.domElement.addEventListener("webglcontextlost", onContextLost);
+    renderer.domElement.addEventListener("webglcontextrestored", resume);
+
+    setCharacter(controller.signal).loadCharacter().then(gltf => {
+      if (!gltf) return;
+      // Cleanup can occur between resolving the model and this callback.
+      if (controller.signal.aborted) { disposeObject(gltf.scene); return; }
+      scene.add(gltf.scene);
+      head = gltf.scene.getObjectByName("spine006");
+      screen = gltf.scene.getObjectByName("screenlight") as THREE.Mesh | undefined;
+      animations = setAnimations(gltf, reduced.matches);
+      if (hoverDivRef.current && !reduced.matches) cleanupHover = animations.hover(hoverDivRef.current);
+      cleanupTimeline = setCharTimeline(gltf.scene, camera);
+      if (!reduced.matches) animations.startIntro();
+      resume();
+    }).catch(error => {
+      if (!controller.signal.aborted) console.warn("3D character could not load; portfolio content remains available.", error);
+    }).finally(() => {
+      if (!controller.signal.aborted) setLoading(100);
+    });
 
     return () => {
+      controller.abort();
       cancelAnimationFrame(rafId);
-      progress.cancel();
-      if (touchDebounce) clearTimeout(touchDebounce);
-      if (resizeTimer) clearTimeout(resizeTimer);
-      io.disconnect();
-
-      document.removeEventListener("mousemove", onMouseMove);
-      window.removeEventListener("resize", onResize);
-      if (landingDiv) {
-        landingDiv.removeEventListener("touchstart", onTouchStart);
-        landingDiv.removeEventListener("touchend", onTouchEnd);
-      }
-      if (touchMoveHandler && touchMoveTarget) {
-        touchMoveTarget.removeEventListener("touchmove", touchMoveHandler);
-      }
-      if (typeof hoverCleanup === "function") hoverCleanup();
-
-      // Dispose Three.js resources
-      scene.traverse((obj) => {
-        const mesh = obj as THREE.Mesh;
-        if (mesh.isMesh) {
-          mesh.geometry?.dispose();
-          const material = mesh.material;
-          if (Array.isArray(material)) {
-            material.forEach((m) => disposeMaterial(m));
-          } else if (material) {
-            disposeMaterial(material);
-          }
-        }
-      });
+      observer.disconnect();
+      resize.disconnect();
+      document.removeEventListener("visibilitychange", resume);
+      reduced.removeEventListener("change", resume);
+      window.removeEventListener("pointermove", onPointerMove);
       renderer.domElement.removeEventListener("webglcontextlost", onContextLost);
-      renderer.domElement.removeEventListener("webglcontextrestored", onContextRestored);
+      renderer.domElement.removeEventListener("webglcontextrestored", resume);
+      cleanupTimeline?.();
+      cleanupHover?.();
+      animations?.dispose();
       light.dispose();
+      disposeObject(scene);
       scene.clear();
       renderer.dispose();
       renderer.forceContextLoss();
-      if (container.contains(renderer.domElement)) {
-        container.removeChild(renderer.domElement);
-      }
+      renderer.domElement.remove();
     };
   }, [setLoading]);
 
-  return (
-    <div className="character-container" aria-hidden="true">
-      <div className="character-model" ref={canvasDiv}>
-        <div className="character-rim"></div>
-        <div className="character-hover" ref={hoverDivRef}></div>
-      </div>
-    </div>
-  );
+  return <div className="character-container" aria-hidden="true"><div className="character-model" ref={canvasDiv}>
+    <div className="character-rim" /><div className="character-hover" ref={hoverDivRef} />
+  </div></div>;
 };
-
-function disposeMaterial(material: THREE.Material) {
-  const m = material as THREE.MeshStandardMaterial;
-  m.map?.dispose();
-  m.normalMap?.dispose();
-  m.roughnessMap?.dispose();
-  m.metalnessMap?.dispose();
-  m.emissiveMap?.dispose();
-  m.aoMap?.dispose();
-  material.dispose();
-}
-
 export default Scene;
