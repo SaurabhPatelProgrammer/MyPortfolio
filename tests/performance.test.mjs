@@ -21,6 +21,38 @@ function load(file, mocks = {}, globals = {}) {
 
 const disposal = load('src/components/Character/utils/disposeObject.ts', { three: THREE });
 
+test('every monitor primitive and the light plane start hidden on all viewport modes', () => {
+  const file = fs.readFileSync('public/models/character.glb');
+  const model = JSON.parse(file.subarray(20, 20 + file.readUInt32LE(12)).toString());
+  const monitorNode = model.nodes.find(node => node.name === 'Plane.004');
+  const character = new THREE.Group();
+  const monitor = new THREE.Group();
+  monitor.name = 'Plane004';
+  for (const primitive of model.meshes[monitorNode.mesh].primitives) {
+    const material = new THREE.MeshStandardMaterial();
+    material.name = model.materials[primitive.material].name;
+    monitor.add(new THREE.Mesh(new THREE.PlaneGeometry(), material));
+  }
+  const light = new THREE.Mesh(new THREE.PlaneGeometry(), new THREE.MeshStandardMaterial());
+  light.name = 'screenlight';
+  character.add(monitor, light);
+  let cleaned = false;
+  const setup = load('src/utils/GsapScroll.ts', {
+    gsap: { registerPlugin() {}, matchMedia: () => ({ add() {}, revert: () => { cleaned = true; } }) },
+    'gsap/ScrollTrigger': { ScrollTrigger: {} },
+  }).setCharTimeline;
+  const cleanup = setup(character, new THREE.PerspectiveCamera());
+  assert.equal(monitor.children.length, 2, 'Cover both actual GLB monitor materials');
+  for (const mesh of [...monitor.children, light]) {
+    assert.equal(mesh.material.opacity, 0, `${mesh.material.name} must not cover the hero`);
+    assert.equal(mesh.material.transparent, true);
+    assert.equal(mesh.material.depthWrite, false, 'Invisible panels must not occlude the character');
+  }
+  cleanup();
+  assert(cleaned);
+  disposal.disposeObject(character);
+});
+
 test('a character render failure dismisses the splash and hides only the 3D view', () => {
   let released = 0;
   const Boundary = load('src/components/Character/CharacterBoundary.tsx', {}, { console: { warn() {} } }).default;

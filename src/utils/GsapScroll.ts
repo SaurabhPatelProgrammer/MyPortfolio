@@ -5,11 +5,29 @@ import { ScrollTrigger } from "gsap/ScrollTrigger";
 gsap.registerPlugin(ScrollTrigger);
 
 export function setCharTimeline(character: THREE.Object3D, camera: THREE.PerspectiveCamera) {
+  const monitorGroup = character.getObjectByName("Plane004");
+  const screen = character.getObjectByName("screenlight") as THREE.Mesh | undefined;
+  // The monitor has two primitives. Hide both before any responsive animation
+  // starts, including mobile/reduced-motion views where the desktop timeline is absent.
+  monitorGroup?.traverse(object => {
+    const mesh = object as THREE.Mesh;
+    if (!mesh.isMesh) return;
+    for (const material of Array.isArray(mesh.material) ? mesh.material : [mesh.material]) {
+      material.transparent = true;
+      material.opacity = 0;
+      material.depthWrite = false;
+    }
+  });
+  if (screen) {
+    const material = screen.material as THREE.MeshStandardMaterial;
+    material.transparent = true;
+    material.opacity = 0;
+    material.depthWrite = false;
+  }
   const media = gsap.matchMedia();
   media.add("(min-width: 1025px) and (prefers-reduced-motion: no-preference)", () => {
     const neck = character.getObjectByName("spine005");
-    const screen = character.getObjectByName("screenlight") as THREE.Mesh | undefined;
-    const monitor = character.getObjectByName("Plane004")?.children.find(
+    const monitor = monitorGroup?.children.find(
       child => ((child as THREE.Mesh).material as THREE.Material)?.name === "Material.027"
     ) as THREE.Mesh | undefined;
 
