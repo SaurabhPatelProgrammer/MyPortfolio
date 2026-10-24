@@ -1,55 +1,34 @@
-# Saurabh Patel — Portfolio v3
+# Saurabh Patel — 3D Portfolio
 
-A product-focused personal portfolio for an AI and full-stack engineer. The experience combines editorial layouts, responsive interaction design, case-study content, an optional 3D hero, and backend-ready contact flows.
+Interactive React + TypeScript portfolio with Three.js, GSAP, responsive sections and light/dark themes.
+Content and assets migrated from SaurabhPatelProgrammer/MyPortfolio. The original repository history is preserved in the destination repository.
 
-## Stack
+## Development
 
-- React 18 + Vite
-- React Router
-- Tailwind CSS with a custom token-based design system
-- Framer Motion
-- Three.js with React Three Fiber and Drei
-- Lucide icons
+Use Node.js 20.19+ or 22.12+.
 
-## Local development
-
-```bash
-npm install
+```sh
+npm ci
 npm run dev
-```
-
-Quality checks:
-
-```bash
 npm run lint
 npm run build
 ```
 
-## Optional API
+Deploy the generated dist folder. Vercel uses the included configuration and clean URLs for legal pages.
+Older /about, /projects, /services and /contact links redirect to the corresponding page sections.
 
-Copy `.env.example` to `.env` and set `VITE_API_URL` when a backend is available.
+## Content
 
-Expected endpoints:
+- Projects: src/data/project-details.json (all six original projects, descriptions, technologies and source/demo links).
+- Journey: src/data/career.json. These are learning stages, not claimed employment.
+- Profile and education: About.tsx and Credentials.tsx.
+- Resume: public/resume/Saurabh_Patel.pdf (original supplied document).
+- Contact: Navbar.tsx, SocialIcons.tsx, Contact.tsx and Cta.tsx.
 
-- `POST /api/contact`
-- `POST /api/inquiries`
-- `POST /api/chat`
-- `POST /api/auth/login`
-- `GET /api/admin/:resource`
+Contact: saurabhprpgrammer94@gmail.com (spelling retained from the original portfolio).
+Website: https://saurabhpatel.vercel.app
 
-Without `VITE_API_URL`, contact and inquiry forms open a pre-filled email draft instead of showing a fake success state. The portfolio guide uses local answers.
+## Credits
 
-## Structure
-
-```text
-src/
-  components/
-    layout/        Global navigation and footer
-    three/         Progressive 3D hero
-    ui/            Reusable interface components
-  config/          Projects, services, skills, and site metadata
-  hooks/           Shared interaction and metadata hooks
-  pages/           Route-level experiences
-```
-
-The 3D experience is loaded progressively. Small screens and visitors who prefer reduced motion receive a lightweight static visual.
+3D design adapted from ShoaibAhmedSoomro/Shoaib-Ahmed-3D-Portfolio.
+The upstream MIT license and Moncy Yohannan copyright notice are retained in LICENSE.

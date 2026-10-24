@@ -1,32 +1,70 @@
-<!doctype html>
+<!DOCTYPE html>
 <html lang="en">
   <head>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <meta name="theme-color" content="#0a0912" />
-    <meta name="color-scheme" content="dark" />
-    <meta name="robots" content="index, follow" />
-    <meta name="description" content="Saurabh Patel is a software developer from Ambedkar Nagar with a BCA in Cyber Security and Forensics, available for software roles and client projects." />
-    <meta name="keywords" content="Saurabh Patel, Software Developer, Full-Stack Developer, React Developer, Cyber Security, BCA, Uttar Pradesh" />
+    <meta name="color-scheme" content="dark light" />
+    <script>
+      // Apply the saved (or OS) theme before first paint to avoid a flash.
+      (function () {
+        var t;
+        try { t = localStorage.getItem("theme"); } catch (e) {}
+        if (t !== "light" && t !== "dark") t = matchMedia("(prefers-color-scheme: light)").matches ? "light" : "dark";
+        document.documentElement.dataset.theme = t;
+      })();
+    </script>
+    <title>Saurabh Patel | Software Developer</title>
+    <meta name="description" content="Software developer from Ambedkar Nagar, India. BCA in Cyber Security & Forensics. Building full-stack applications, modular AI experiments and practical automation." />
+    <meta name="keywords" content="Saurabh Patel, Software Developer, MERN, React, Python, AI, SHYRA, Portfolio, India" />
     <meta name="author" content="Saurabh Patel" />
-    <meta property="og:title" content="Saurabh Patel — Software Developer" />
-    <meta property="og:description" content="Full-stack applications, AI experiments, and practical digital experiences — built from idea to launch." />
-    <meta property="og:type" content="website" />
-    <meta property="og:locale" content="en_IN" />
-    <meta property="og:url" content="https://saurabhpatel.vercel.app" />
-    <link rel="canonical" href="https://saurabhpatel.vercel.app" />
-    <meta name="twitter:card" content="summary" />
-    <meta name="twitter:title" content="Saurabh Patel — Software Developer" />
-    <meta name="twitter:description" content="Software developer open to roles and client projects." />
+    <meta name="robots" content="index, follow, max-image-preview:large, max-snippet:-1, max-video-preview:-1" />
+    <meta name="theme-color" content="#0b080c" />
+    <link rel="canonical" href="https://saurabhpatel.vercel.app/" />
+    <link rel="alternate" type="text/plain" href="/llms.txt" title="LLMs.txt" />
+
+    <!-- Icons -->
     <link rel="icon" type="image/svg+xml" href="/favicon.svg" />
+
+
+
+
     <link rel="manifest" href="/site.webmanifest" />
+
+    <!-- Fonts: Bricolage Grotesque (headings), Plus Jakarta Sans (body), JetBrains Mono (labels) -->
     <link rel="preconnect" href="https://fonts.googleapis.com" />
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
-    <link href="https://fonts.googleapis.com/css2?family=DM+Sans:wght@400;500;600;700&family=Manrope:wght@400;500;600;700;800&display=swap" rel="stylesheet" />
-    <title>Saurabh Patel — Software Developer</title>
+    <link
+      rel="stylesheet"
+      href="https://fonts.googleapis.com/css2?family=Bricolage+Grotesque:opsz,wght@12..96,200..800&family=JetBrains+Mono:wght@300..700&family=Plus+Jakarta+Sans:wght@200..800&display=swap"
+    />
+
+    <!-- Open Graph -->
+    <meta property="og:type" content="website" />
+    <meta property="og:site_name" content="Saurabh Patel" />
+    <meta property="og:url" content="https://saurabhpatel.vercel.app/" />
+    <meta property="og:title" content="Saurabh Patel | Software Developer" />
+    <meta property="og:description" content="Saurabh Patel builds full-stack applications, modular AI experiments and practical automation. Explore projects, skills and a 3D experience." />
+    <meta property="og:image" content="https://saurabhpatel.vercel.app/og-image.webp" />
+    <meta property="og:image:alt" content="Saurabh Patel | Software Developer" />
+    <meta property="og:locale" content="en_US" />
+
+    <!-- Twitter Card -->
+    <meta name="twitter:card" content="summary_large_image" />
+    <meta name="twitter:title" content="Saurabh Patel | Software Developer" />
+    <meta name="twitter:description" content="Saurabh Patel builds full-stack applications, modular AI experiments and practical automation." />
+    <meta name="twitter:image" content="https://saurabhpatel.vercel.app/og-image.webp" />
+
+    <!-- Structured data -->
+    <script type="application/ld+json">{"@context":"https://schema.org","@type":"Person","name":"Saurabh Patel","url":"https://saurabhpatel.vercel.app","jobTitle":"Software Developer","email":"mailto:saurabhprpgrammer94@gmail.com","address":{"@type":"PostalAddress","addressLocality":"Ambedkar Nagar","addressRegion":"Uttar Pradesh","addressCountry":"IN"},"sameAs":["https://github.com/SaurabhPatelProgrammer","https://www.linkedin.com/in/saurabh-verma-49bb8a28b","https://huggingface.co/spaces/saurabhpatelprogrammer/shyra-brain"],"knowsAbout":["React","Node.js","MongoDB","Python","AI","Cyber Security"]}</script>
   </head>
   <body>
     <div id="root"></div>
-    <script type="module" src="/src/main.jsx"></script>
+    <noscript>
+      <p style="color: #eae5ec; font-family: sans-serif; padding: 2rem">
+        Saurabh Patel | Software Developer. This portfolio needs JavaScript for its 3D
+        scene. Email: saurabhprpgrammer94@gmail.com · <a href="/privacy">Privacy</a> · <a href="/terms">Terms</a>
+      </p>
+    </noscript>
+    <script type="module" src="/src/main.tsx"></script>
   </body>
 </html>

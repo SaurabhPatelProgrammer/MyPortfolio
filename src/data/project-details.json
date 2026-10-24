@@ -1,0 +1,184 @@
+[
+  {
+    "id": "shyra-ai",
+    "title": "SHYRA",
+    "eyebrow": "Public AI repository",
+    "tagline": "An experimental AI system with public voice, vision, memory, and server modules.",
+    "description": "SHYRA is an active AI learning and engineering project. Its GitHub repository is organized into body, brain, and server areas, while the public Hugging Face Space includes ears, mouth, memory, and vision modules.",
+    "challenge": "Explore how voice, vision, memory, and server-side responsibilities can be organized as one understandable system while the product direction is still evolving.",
+    "solution": "A modular codebase split by responsibility, with a separate public SHYRA Brain Space for Python-based experiments.",
+    "outcome": "An ongoing public prototype with reviewable source and a Hugging Face Space. It is intentionally presented as work in progress, not as a released commercial product.",
+    "tags": [
+      "AI prototype",
+      "Voice",
+      "Vision",
+      "Memory"
+    ],
+    "category": "AI",
+    "featured": true,
+    "status": "Public · In progress",
+    "year": "Current",
+    "tech": [
+      "Python",
+      "JavaScript",
+      "C++",
+      "Docker"
+    ],
+    "github": "https://github.com/SaurabhPatelProgrammer/SHYRA",
+    "demo": "https://huggingface.co/spaces/saurabhpatelprogrammer/shyra-brain",
+    "image": "/images/project-covers/shyra-cover-v1.webp",
+    "accent": "#a78bfa",
+    "index": "01"
+  },
+  {
+    "id": "portfolio-v3",
+    "title": "Personal Portfolio",
+    "eyebrow": "Public · Live website",
+    "tagline": "A responsive personal portfolio for presenting engineering work and services.",
+    "description": "The site you are viewing is a public React portfolio with case-study content, responsive motion, an optional Three.js experience, and backend-ready enquiry flows.",
+    "challenge": "Present different engineering interests without making the personal story or navigation feel fragmented.",
+    "solution": "A config-driven React application with a reusable visual system, progressive 3D loading, project detail routes, and honest form fallbacks.",
+    "outcome": "A live public website and repository that can evolve as stronger project evidence, writing, and professional milestones become available.",
+    "tags": [
+      "React",
+      "Three.js",
+      "Responsive"
+    ],
+    "category": "Creative",
+    "featured": true,
+    "status": "Public · Live",
+    "year": "2024–Current",
+    "tech": [
+      "React",
+      "Vite",
+      "Tailwind CSS",
+      "Three.js",
+      "Framer Motion"
+    ],
+    "github": "https://github.com/SaurabhPatelProgrammer/MyPortfolio",
+    "demo": "https://saurabhpatel.vercel.app",
+    "image": "/images/project-covers/portfolio-cover-v1.webp",
+    "accent": "#fb7185",
+    "index": "02"
+  },
+  {
+    "id": "travel-itinerary-builder",
+    "title": "Travel Itinerary Builder",
+    "eyebrow": "Public · Live MERN app",
+    "tagline": "An AI-assisted travel planner that turns booking documents into structured itineraries.",
+    "description": "A full-stack travel planning application where users can register, upload booking PDFs or images, generate structured trip plans, revisit itinerary history, and create public share links.",
+    "challenge": "Turn unstructured booking documents into a useful itinerary while keeping authentication, uploads, AI processing, history, and sharing within one clear workflow.",
+    "solution": "A React and Vite interface connected to an Express and MongoDB API, with JWT authentication, Multer uploads, document text extraction, and configurable OpenAI or Gemini generation.",
+    "outcome": "A public, reviewable MERN codebase with a deployed frontend and end-to-end product flows that demonstrate practical full-stack and AI integration skills.",
+    "tags": [
+      "MERN",
+      "AI integration",
+      "Document upload"
+    ],
+    "category": "Web",
+    "featured": true,
+    "status": "Public · Live",
+    "year": "2026",
+    "tech": [
+      "React",
+      "Vite",
+      "Node.js",
+      "Express",
+      "MongoDB",
+      "JWT",
+      "Multer"
+    ],
+    "github": "https://github.com/SaurabhPatelProgrammer/travel",
+    "demo": "https://travel-bice-zeta.vercel.app",
+    "image": "/images/project-covers/travel-cover-v1.webp",
+    "accent": "#a78bfa",
+    "index": "03"
+  },
+  {
+    "id": "notes-marketplace",
+    "title": "Notes Selling Platform",
+    "eyebrow": "Local project snapshot",
+    "tagline": "A student-focused concept for listing and discovering academic notes.",
+    "description": "A local product concept for uploading, managing, and discovering academic notes. The portfolio currently has an interface screenshot but no linked public repository or deployment.",
+    "challenge": "Organize academic resources into a clearer discovery and management experience for students.",
+    "solution": "A marketplace-style React interface concept centered on resource listings and student workflows.",
+    "outcome": "Presented as an archived product exploration until source code or a live build is published.",
+    "tags": [
+      "React concept",
+      "Marketplace",
+      "Education"
+    ],
+    "category": "Web",
+    "featured": false,
+    "status": "Local build",
+    "year": "Archive",
+    "tech": [
+      "React",
+      "JavaScript",
+      "Responsive UI"
+    ],
+    "github": null,
+    "demo": null,
+    "image": "/images/noteselling.jpg",
+    "accent": "#ffb45e",
+    "index": "04"
+  },
+  {
+    "id": "social-media-app",
+    "title": "Social Media App",
+    "eyebrow": "Local UI project",
+    "tagline": "An Instagram-inspired responsive interface for posts, profiles, and discovery.",
+    "description": "A local social-interface project represented by a portfolio screenshot. It explores familiar post-sharing and discovery patterns without claiming a currently available public service.",
+    "challenge": "Keep a content-heavy social interface familiar and easy to scan across screen sizes.",
+    "solution": "A responsive React UI organized around posts, people, and lightweight social interactions.",
+    "outcome": "An archived interface project. A repository link can be added when the source is published.",
+    "tags": [
+      "React UI",
+      "Responsive",
+      "Social"
+    ],
+    "category": "Web",
+    "featured": false,
+    "status": "Local build",
+    "year": "Archive",
+    "tech": [
+      "React",
+      "JavaScript",
+      "Responsive UI"
+    ],
+    "github": null,
+    "demo": null,
+    "image": "/images/socialmedia-optimized.jpg",
+    "accent": "#ff6f91",
+    "index": "05"
+  },
+  {
+    "id": "about-day-app",
+    "title": "About Day App",
+    "eyebrow": "Local UI project",
+    "tagline": "A daily-planning concept for activities, reminders, and focused routines.",
+    "description": "A local productivity-interface project represented by its original screenshot and portfolio description. No public repository or live deployment is linked.",
+    "challenge": "Bring daily activities and reminders into a simple, approachable view.",
+    "solution": "A themed planning interface focused on lightweight daily organization.",
+    "outcome": "Preserved as an archived UI build until more implementation evidence is available.",
+    "tags": [
+      "Productivity",
+      "React UI",
+      "Planning"
+    ],
+    "category": "Web",
+    "featured": false,
+    "status": "Local build",
+    "year": "Archive",
+    "tech": [
+      "React",
+      "JavaScript",
+      "UI design"
+    ],
+    "github": null,
+    "demo": null,
+    "image": "/images/aboutday-optimized.jpg",
+    "accent": "#45d4b1",
+    "index": "06"
+  }
+]

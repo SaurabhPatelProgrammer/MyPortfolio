@@ -1,2 +1,17 @@
 User-agent: *
 Allow: /
+
+# AI / LLM crawlers are welcome; see /llms.txt
+User-agent: GPTBot
+Allow: /
+
+User-agent: ClaudeBot
+Allow: /
+
+User-agent: PerplexityBot
+Allow: /
+
+User-agent: Google-Extended
+Allow: /
+
+Sitemap: https://saurabhpatel.vercel.app/sitemap.xml

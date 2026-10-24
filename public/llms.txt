@@ -1,0 +1,11 @@
+# Saurabh Patel
+
+Software developer from Ambedkar Nagar, Uttar Pradesh, India. BCA in Cyber Security & Forensics.
+
+Building full-stack applications, AI experiments and automation. Projects: SHYRA, Personal Portfolio, Travel Itinerary Builder, Notes Selling Platform, Social Media App, About Day App. The last three are archived local builds.
+
+Portfolio: https://saurabhpatel.vercel.app
+GitHub: https://github.com/SaurabhPatelProgrammer
+LinkedIn: https://www.linkedin.com/in/saurabh-verma-49bb8a28b
+Contact: saurabhprpgrammer94@gmail.com
+Resume: https://saurabhpatel.vercel.app/resume/Saurabh_Patel.pdf

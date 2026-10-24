@@ -1,0 +1,32 @@
+{
+  "entries": [
+    {
+      "role": "Programming foundations",
+      "company": "Python",
+      "place": "Independent learning",
+      "period": "Stage 01",
+      "summary": "Started with Python and learned to turn small ideas into working scripts and interfaces."
+    },
+    {
+      "role": "Full-stack development",
+      "company": "React & MERN",
+      "place": "Product development",
+      "period": "Stage 02",
+      "summary": "Expanded into React and MERN-oriented applications, connecting frontend flows with APIs and data."
+    },
+    {
+      "role": "Applied systems",
+      "company": "AI, vision & connected devices",
+      "place": "Technical exploration",
+      "period": "Stage 03",
+      "summary": "Explored AI-oriented software, computer vision concepts and connected-device development."
+    },
+    {
+      "role": "Public builds and deeper practice",
+      "company": "SHYRA & open source",
+      "place": "Current focus",
+      "period": "Current",
+      "summary": "Developing SHYRA as a modular AI experiment with body, brain, server, voice, memory and vision modules while publishing stronger project evidence."
+    }
+  ]
+}

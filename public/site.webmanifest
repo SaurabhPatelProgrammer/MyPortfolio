@@ -1,9 +1,15 @@
 {
-  "name": "Saurabh Patel — Portfolio",
+  "name": "Saurabh Patel | Portfolio",
   "short_name": "SP Portfolio",
   "start_url": "/",
   "display": "standalone",
-  "background_color": "#0a0912",
-  "theme_color": "#0a0912",
-  "icons": [{ "src": "/favicon.svg", "sizes": "any", "type": "image/svg+xml" }]
+  "background_color": "#0b080c",
+  "theme_color": "#0b080c",
+  "icons": [
+    {
+      "src": "/favicon.svg",
+      "sizes": "any",
+      "type": "image/svg+xml"
+    }
+  ]
 }
