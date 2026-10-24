@@ -86,7 +86,6 @@
     var(--accentColor) 50%,
     transparent 95%
   );
-  max-height: 0%;
 }
 .career-dot {
   position: absolute;
@@ -97,37 +96,26 @@
   width: 10px;
   height: 10px;
   border-radius: 50px;
-  box-shadow: 0px 0px 5px 2px var(--accentLight), 0px 0px 15px 8px var(--accentMid),
-    0px 0px 110px 20px var(--accentLight);
-  animation: timeline 0.8s linear infinite forwards;
+  box-shadow: 0 0 6px 2px var(--accentLight);
 }
 
-@keyframes timeline {
-  10%,
-  20%,
-  50%,
-  70%,
-  90% {
-    box-shadow: 0px 0px 5px 2px var(--accentLight);
-  }
-  10%,
-  30%,
-  0%,
-  100%,
-  64%,
-  80% {
-    box-shadow: 0px 0px 5px 2px var(--accentLight), 0px 0px 15px 5px var(--accentMid),
-      0px 0px 110px 20px var(--accentLight);
-  }
+.career-dot::after {
+  content: "";
+  position: absolute;
+  inset: 0;
+  border-radius: inherit;
+  box-shadow: 0 0 18px 7px var(--accentMid), 0 0 70px 18px var(--accentLight);
+  opacity: 0.65;
+  animation: journey-glow 1.4s ease-in-out infinite alternate;
+  animation-play-state: paused;
 }
-@keyframes timeline2 {
-  0% {
-    box-shadow: 0px 0px 5px 2px var(--accentLight);
-  }
-  100% {
-    box-shadow: 0px 0px 5px 2px var(--accentLight), 0px 0px 15px 5px var(--accentMid),
-      0px 0px 110px 20px var(--accentLight);
-  }
+.journey-active .career-dot::after { animation-play-state: running; }
+@keyframes journey-glow {
+  from { opacity: 0.35; }
+  to { opacity: 0.9; }
+}
+@media (prefers-reduced-motion: reduce) {
+  .career-dot::after { animation: none; }
 }
 @media only screen and (max-width: 1400px) {
   .career-section h2 {

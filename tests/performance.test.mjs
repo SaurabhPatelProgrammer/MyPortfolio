@@ -21,6 +21,29 @@ function load(file, mocks = {}, globals = {}) {
 
 const disposal = load('src/components/Character/utils/disposeObject.ts', { three: THREE });
 
+test('journey glow activates only in view and its line has a visible static fallback', () => {
+  const classes = new Set();
+  let trigger, mediaCleanup;
+  const section = { classList: { toggle: (name, active) => active ? classes.add(name) : classes.delete(name), remove: name => classes.delete(name) } };
+  const timeline = { fromTo() { return this; } };
+  const { setAllTimeline } = load('src/utils/GsapScroll.ts', {
+    gsap: { registerPlugin() {}, timeline: () => timeline, matchMedia: () => ({ add: (_query, setup) => { mediaCleanup = setup(); }, revert: () => mediaCleanup() }) },
+    'gsap/ScrollTrigger': { ScrollTrigger: { create: options => { trigger = options; } } },
+  }, { document: { querySelector: () => section } });
+  const cleanup = setAllTimeline();
+  trigger.onToggle({ isActive: true });
+  assert(classes.has('journey-active'));
+  trigger.onToggle({ isActive: false });
+  assert.equal(classes.size, 0);
+  trigger.onToggle({ isActive: true });
+  cleanup();
+  assert.equal(classes.size, 0);
+  const css = fs.readFileSync('src/styles/Career.css', 'utf8');
+  const line = css.match(/\.career-timeline\s*\{([^}]+)\}/)[1];
+  assert.match(line, /height:\s*100%/);
+  assert.doesNotMatch(line, /max-height:\s*0/);
+});
+
 test('every monitor primitive and the light plane start hidden on all viewport modes', () => {
   const file = fs.readFileSync('public/models/character.glb');
   const model = JSON.parse(file.subarray(20, 20 + file.readUInt32LE(12)).toString());

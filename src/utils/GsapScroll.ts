@@ -69,9 +69,18 @@ export function setCharTimeline(character: THREE.Object3D, camera: THREE.Perspec
 export function setAllTimeline() {
   const media = gsap.matchMedia();
   media.add("(prefers-reduced-motion: no-preference)", () => {
+    const section = document.querySelector(".career-section");
+    ScrollTrigger.create({
+      trigger: section,
+      start: "top bottom",
+      end: "bottom top",
+      onToggle: self => section?.classList.toggle("journey-active", self.isActive),
+    });
     gsap.timeline({ scrollTrigger: { trigger: ".career-section", start: "top 80%", end: "bottom 60%", scrub: true } })
-      .fromTo(".career-timeline", { scaleY: 0.1, transformOrigin: "top" }, { scaleY: 1, duration: 1 }, 0)
+      // Change this absolute line's height so its child glow stays round.
+      .fromTo(".career-timeline", { height: "10%" }, { height: "100%", duration: 1, ease: "none" }, 0)
       .fromTo(".career-info-box", { opacity: 0.3, y: 20 }, { opacity: 1, y: 0, stagger: 0.15, duration: 0.5 }, 0);
+    return () => section?.classList.remove("journey-active");
   });
   return () => media.revert();
 }
