@@ -6,8 +6,8 @@
     "tagline": "A review queue for AI-written outreach, from a company fact to a tracked Gmail reply.",
     "description": "A Google Sheet holds the company fact, draft and approval decision for each lead. The workflow sends approved messages to a configured test inbox.",
     "challenge": "Keep a person in control of outgoing email and match replies to the right lead.",
-    "solution": "n8n calls OpenAI for a draft, checks the approval status before sending and stores the Gmail thread ID to match incoming replies.",
-    "outcome": "The workflow JSON includes setup instructions and a sample lead. Running the prototype requires Google and OpenAI credentials.",
+    "solution": "n8n calls the Groq API for a draft, checks the approval status before sending and stores the Gmail thread ID to match incoming replies.",
+    "outcome": "The workflow JSON includes setup instructions and a sample lead. Running the prototype requires Google credentials and a Groq API key.",
     "tags": [
       "Email automation",
       "Human review"
@@ -18,7 +18,7 @@
     "year": "Current",
     "tech": [
       "n8n",
-      "OpenAI API",
+      "Groq API",
       "Google Sheets",
       "Gmail"
     ],

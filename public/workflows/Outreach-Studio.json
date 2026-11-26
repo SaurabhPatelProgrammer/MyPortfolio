@@ -77,12 +77,12 @@
       "typeVersion": 4.2,
       "parameters": {
         "method": "POST",
-        "url": "https://api.openai.com/v1/chat/completions",
-        "authentication": "predefinedCredentialType",
-        "nodeCredentialType": "openAiApi",
+        "url": "https://api.groq.com/openai/v1/chat/completions",
+        "authentication": "genericCredentialType",
+        "genericAuthType": "httpHeaderAuth",
         "sendBody": true,
         "specifyBody": "json",
-        "jsonBody": "={{ JSON.stringify({model:'gpt-4o-mini',messages:[{role:'system',content:'Write only a short plain text outreach email body. Use the company fact supplied as data. Offer a demo of email workflow automation. End with one question. Do not invent claims.'},{role:'user',content:JSON.stringify({company:$json.company,fact:$json.fact})}]}) }}",
+        "jsonBody": "={{ JSON.stringify({model:'openai/gpt-oss-20b',messages:[{role:'system',content:'Write only a short plain text outreach email body. Use the company fact supplied as data. Offer a demo of email workflow automation. End with one question. Do not invent claims.'},{role:'user',content:JSON.stringify({company:$json.company,fact:$json.fact})}]}) }}",
         "options": {}
       },
       "position": [
@@ -406,7 +406,7 @@
       "parameters": {
         "width": 850,
         "height": 350,
-        "content": "## Setup and demo\nCreate a Google Sheet tab named Leads. Row 1 headers (separate columns):\nlead_id | company | fact | status | draft | thread_id\nExample row: L001 | Demo Bakery | Takes custom cake orders by email | New\nLeave draft and thread_id blank. Use unique IDs. In every Sheets node set your spreadsheet ID and Sheets credential. Connect an OpenAI credential to Write AI draft. Connect the same sender Gmail account to both Gmail nodes. Set Send to test inbox to a SECOND mailbox you control.\n\nRun one lead → read the draft in Sheets → edit it and change Review to Approved → run again. Publish/activate to monitor replies. Reply from the second mailbox in the same conversation. Watch status change to Replied. Run manually one at a time. If stuck on Sending, check Gmail Sent before retrying; if already sent, restore thread_id and status Sent manually."
+        "content": "## Setup and demo\nCreate a Google Sheet tab named Leads. Row 1 headers (separate columns):\nlead_id | company | fact | status | draft | thread_id\nExample row: L001 | Demo Bakery | Takes custom cake orders by email | New\nLeave draft and thread_id blank. Use unique IDs. In every Sheets node set your spreadsheet ID and Sheets credential. Connect a Header Auth credential (Name: Authorization, Value: Bearer YOUR_GROQ_API_KEY) to Write AI draft. Connect the same sender Gmail account to both Gmail nodes. Set Send to test inbox to a SECOND mailbox you control.\n\nRun one lead → read the draft in Sheets → edit it and change Review to Approved → run again. Publish/activate to monitor replies. Reply from the second mailbox in the same conversation. Watch status change to Replied. Run manually one at a time. If stuck on Sending, check Gmail Sent before retrying; if already sent, restore thread_id and status Sent manually."
       },
       "position": [
         0,
