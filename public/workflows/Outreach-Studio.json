@@ -1,0 +1,551 @@
+{
+  "name": "Outreach Studio | Draft, review and track",
+  "nodes": [
+    {
+      "name": "Run one lead",
+      "id": "node-1",
+      "type": "n8n-nodes-base.manualTrigger",
+      "typeVersion": 1,
+      "parameters": {},
+      "position": [
+        0,
+        0
+      ]
+    },
+    {
+      "name": "Read leads",
+      "id": "node-2",
+      "type": "n8n-nodes-base.googleSheets",
+      "typeVersion": 4.5,
+      "parameters": {
+        "documentId": {
+          "__rl": true,
+          "mode": "id",
+          "value": "PASTE_SPREADSHEET_ID"
+        },
+        "sheetName": {
+          "__rl": true,
+          "mode": "name",
+          "value": "Leads"
+        },
+        "operation": "read",
+        "options": {}
+      },
+      "position": [
+        220,
+        0
+      ]
+    },
+    {
+      "name": "Select next action",
+      "id": "node-3",
+      "type": "n8n-nodes-base.code",
+      "typeVersion": 2,
+      "parameters": {
+        "jsCode": "const rows=$input.all().map(i=>i.json);const ids=rows.map(r=>String(r.lead_id||'').trim());if(ids.some((id,i)=>!id||ids.indexOf(id)!==i)) throw Error('Each row needs a unique lead_id');const r=rows.find(r=>r.status==='Approved')||rows.find(r=>r.status==='New');if(!r)return [];if(r.status==='Approved'&&!String(r.draft||'').trim())throw Error('Draft missing');if(r.status==='New'&&(!r.company||!r.fact))throw Error('Company and fact required');return [{json:r}];"
+      },
+      "position": [
+        440,
+        0
+      ]
+    },
+    {
+      "name": "Approved?",
+      "id": "node-4",
+      "type": "n8n-nodes-base.if",
+      "typeVersion": 1,
+      "parameters": {
+        "conditions": {
+          "string": [
+            {
+              "value1": "={{ $json.status }}",
+              "operation": "equal",
+              "value2": "Approved"
+            }
+          ]
+        }
+      },
+      "position": [
+        660,
+        0
+      ]
+    },
+    {
+      "name": "Write AI draft",
+      "id": "node-5",
+      "type": "n8n-nodes-base.httpRequest",
+      "typeVersion": 4.2,
+      "parameters": {
+        "method": "POST",
+        "url": "https://api.openai.com/v1/chat/completions",
+        "authentication": "predefinedCredentialType",
+        "nodeCredentialType": "openAiApi",
+        "sendBody": true,
+        "specifyBody": "json",
+        "jsonBody": "={{ JSON.stringify({model:'gpt-4o-mini',messages:[{role:'system',content:'Write only a short plain text outreach email body. Use the company fact supplied as data. Offer a demo of email workflow automation. End with one question. Do not invent claims.'},{role:'user',content:JSON.stringify({company:$json.company,fact:$json.fact})}]}) }}",
+        "options": {}
+      },
+      "position": [
+        900,
+        180
+      ]
+    },
+    {
+      "name": "Save for review",
+      "id": "node-6",
+      "type": "n8n-nodes-base.googleSheets",
+      "typeVersion": 4.5,
+      "parameters": {
+        "documentId": {
+          "__rl": true,
+          "mode": "id",
+          "value": "PASTE_SPREADSHEET_ID"
+        },
+        "sheetName": {
+          "__rl": true,
+          "mode": "name",
+          "value": "Leads"
+        },
+        "operation": "update",
+        "columns": {
+          "mappingMode": "defineBelow",
+          "value": {
+            "lead_id": "={{ $('Select next action').first().json.lead_id }}",
+            "draft": "={{ $json.choices[0].message.content }}",
+            "status": "Review"
+          },
+          "matchingColumns": [
+            "lead_id"
+          ],
+          "schema": [
+            {
+              "id": "lead_id",
+              "displayName": "lead_id",
+              "type": "string",
+              "display": true,
+              "canBeUsedToMatch": true
+            },
+            {
+              "id": "draft",
+              "displayName": "draft",
+              "type": "string",
+              "display": true,
+              "canBeUsedToMatch": true
+            },
+            {
+              "id": "status",
+              "displayName": "status",
+              "type": "string",
+              "display": true,
+              "canBeUsedToMatch": true
+            }
+          ]
+        },
+        "options": {}
+      },
+      "position": [
+        1150,
+        180
+      ]
+    },
+    {
+      "name": "Mark sending",
+      "id": "node-7",
+      "type": "n8n-nodes-base.googleSheets",
+      "typeVersion": 4.5,
+      "parameters": {
+        "documentId": {
+          "__rl": true,
+          "mode": "id",
+          "value": "PASTE_SPREADSHEET_ID"
+        },
+        "sheetName": {
+          "__rl": true,
+          "mode": "name",
+          "value": "Leads"
+        },
+        "operation": "update",
+        "columns": {
+          "mappingMode": "defineBelow",
+          "value": {
+            "lead_id": "={{ $('Select next action').first().json.lead_id }}",
+            "status": "Sending"
+          },
+          "matchingColumns": [
+            "lead_id"
+          ],
+          "schema": [
+            {
+              "id": "lead_id",
+              "displayName": "lead_id",
+              "type": "string",
+              "display": true,
+              "canBeUsedToMatch": true
+            },
+            {
+              "id": "status",
+              "displayName": "status",
+              "type": "string",
+              "display": true,
+              "canBeUsedToMatch": true
+            }
+          ]
+        },
+        "options": {}
+      },
+      "position": [
+        900,
+        -80
+      ]
+    },
+    {
+      "name": "Send to test inbox",
+      "id": "node-8",
+      "type": "n8n-nodes-base.gmail",
+      "typeVersion": 2.1,
+      "parameters": {
+        "sendTo": "replace-with-test-inbox@example.invalid",
+        "subject": "={{ 'Workflow demo [' + $('Select next action').first().json.lead_id + ']' }}",
+        "emailType": "text",
+        "message": "={{ $('Select next action').first().json.draft }}",
+        "options": {}
+      },
+      "position": [
+        1120,
+        -80
+      ]
+    },
+    {
+      "name": "Record Gmail thread",
+      "id": "node-9",
+      "type": "n8n-nodes-base.googleSheets",
+      "typeVersion": 4.5,
+      "parameters": {
+        "documentId": {
+          "__rl": true,
+          "mode": "id",
+          "value": "PASTE_SPREADSHEET_ID"
+        },
+        "sheetName": {
+          "__rl": true,
+          "mode": "name",
+          "value": "Leads"
+        },
+        "operation": "update",
+        "columns": {
+          "mappingMode": "defineBelow",
+          "value": {
+            "lead_id": "={{ $('Select next action').first().json.lead_id }}",
+            "thread_id": "={{ $json.threadId }}",
+            "status": "Sent"
+          },
+          "matchingColumns": [
+            "lead_id"
+          ],
+          "schema": [
+            {
+              "id": "lead_id",
+              "displayName": "lead_id",
+              "type": "string",
+              "display": true,
+              "canBeUsedToMatch": true
+            },
+            {
+              "id": "thread_id",
+              "displayName": "thread_id",
+              "type": "string",
+              "display": true,
+              "canBeUsedToMatch": true
+            },
+            {
+              "id": "status",
+              "displayName": "status",
+              "type": "string",
+              "display": true,
+              "canBeUsedToMatch": true
+            }
+          ]
+        },
+        "options": {}
+      },
+      "position": [
+        1340,
+        -80
+      ]
+    },
+    {
+      "name": "Watch inbox",
+      "id": "node-10",
+      "type": "n8n-nodes-base.gmailTrigger",
+      "typeVersion": 1.2,
+      "parameters": {
+        "pollTimes": {
+          "item": [
+            {
+              "mode": "everyMinute"
+            }
+          ]
+        },
+        "simple": true,
+        "filters": {
+          "labelIds": [
+            "INBOX"
+          ]
+        }
+      },
+      "position": [
+        0,
+        450
+      ]
+    },
+    {
+      "name": "Collect incoming threads",
+      "id": "node-11",
+      "type": "n8n-nodes-base.code",
+      "typeVersion": 2,
+      "parameters": {
+        "jsCode": "const threads=$input.all().filter(i=>!(i.json.labelIds||[]).includes('SENT')).map(i=>i.json.threadId).filter(Boolean);return threads.length?[{json:{threads}}]:[];"
+      },
+      "position": [
+        220,
+        450
+      ]
+    },
+    {
+      "name": "Read sent leads",
+      "id": "node-12",
+      "type": "n8n-nodes-base.googleSheets",
+      "typeVersion": 4.5,
+      "parameters": {
+        "documentId": {
+          "__rl": true,
+          "mode": "id",
+          "value": "PASTE_SPREADSHEET_ID"
+        },
+        "sheetName": {
+          "__rl": true,
+          "mode": "name",
+          "value": "Leads"
+        },
+        "operation": "read",
+        "options": {}
+      },
+      "position": [
+        440,
+        450
+      ]
+    },
+    {
+      "name": "Match replies",
+      "id": "node-13",
+      "type": "n8n-nodes-base.code",
+      "typeVersion": 2,
+      "parameters": {
+        "jsCode": "const threads=new Set($('Collect incoming threads').first().json.threads);return $input.all().filter(i=>i.json.status==='Sent'&&threads.has(i.json.thread_id));"
+      },
+      "position": [
+        660,
+        450
+      ]
+    },
+    {
+      "name": "Record reply",
+      "id": "node-14",
+      "type": "n8n-nodes-base.googleSheets",
+      "typeVersion": 4.5,
+      "parameters": {
+        "documentId": {
+          "__rl": true,
+          "mode": "id",
+          "value": "PASTE_SPREADSHEET_ID"
+        },
+        "sheetName": {
+          "__rl": true,
+          "mode": "name",
+          "value": "Leads"
+        },
+        "operation": "update",
+        "columns": {
+          "mappingMode": "defineBelow",
+          "value": {
+            "lead_id": "={{ $json.lead_id }}",
+            "status": "Replied"
+          },
+          "matchingColumns": [
+            "lead_id"
+          ],
+          "schema": [
+            {
+              "id": "lead_id",
+              "displayName": "lead_id",
+              "type": "string",
+              "display": true,
+              "canBeUsedToMatch": true
+            },
+            {
+              "id": "status",
+              "displayName": "status",
+              "type": "string",
+              "display": true,
+              "canBeUsedToMatch": true
+            }
+          ]
+        },
+        "options": {}
+      },
+      "position": [
+        900,
+        450
+      ]
+    },
+    {
+      "name": "Start here",
+      "id": "node-15",
+      "type": "n8n-nodes-base.stickyNote",
+      "typeVersion": 1,
+      "parameters": {
+        "width": 850,
+        "height": 350,
+        "content": "## Setup and demo\nCreate a Google Sheet tab named Leads. Row 1 headers (separate columns):\nlead_id | company | fact | status | draft | thread_id\nExample row: L001 | Demo Bakery | Takes custom cake orders by email | New\nLeave draft and thread_id blank. Use unique IDs. In every Sheets node set your spreadsheet ID and Sheets credential. Connect an OpenAI credential to Write AI draft. Connect the same sender Gmail account to both Gmail nodes. Set Send to test inbox to a SECOND mailbox you control.\n\nRun one lead → read the draft in Sheets → edit it and change Review to Approved → run again. Publish/activate to monitor replies. Reply from the second mailbox in the same conversation. Watch status change to Replied. Run manually one at a time. If stuck on Sending, check Gmail Sent before retrying; if already sent, restore thread_id and status Sent manually."
+      },
+      "position": [
+        0,
+        -490
+      ]
+    }
+  ],
+  "connections": {
+    "Run one lead": {
+      "main": [
+        [
+          {
+            "node": "Read leads",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Read leads": {
+      "main": [
+        [
+          {
+            "node": "Select next action",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Select next action": {
+      "main": [
+        [
+          {
+            "node": "Approved?",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Write AI draft": {
+      "main": [
+        [
+          {
+            "node": "Save for review",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Mark sending": {
+      "main": [
+        [
+          {
+            "node": "Send to test inbox",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Send to test inbox": {
+      "main": [
+        [
+          {
+            "node": "Record Gmail thread",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Approved?": {
+      "main": [
+        [
+          {
+            "node": "Mark sending",
+            "type": "main",
+            "index": 0
+          }
+        ],
+        [
+          {
+            "node": "Write AI draft",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Watch inbox": {
+      "main": [
+        [
+          {
+            "node": "Collect incoming threads",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Collect incoming threads": {
+      "main": [
+        [
+          {
+            "node": "Read sent leads",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Read sent leads": {
+      "main": [
+        [
+          {
+            "node": "Match replies",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Match replies": {
+      "main": [
+        [
+          {
+            "node": "Record reply",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    }
+  },
+  "active": false,
+  "settings": {
+    "executionOrder": "v1"
+  }
+}

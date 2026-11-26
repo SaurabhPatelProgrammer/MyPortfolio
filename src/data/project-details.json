@@ -1,5 +1,34 @@
 [
   {
+    "id": "outreach-studio",
+    "title": "Outreach Studio",
+    "eyebrow": "Importable n8n workflow",
+    "tagline": "A review queue for AI-written outreach, from a company fact to a tracked Gmail reply.",
+    "description": "A Google Sheet holds the company fact, draft and approval decision for each lead. The workflow sends approved messages to a configured test inbox.",
+    "challenge": "Keep a person in control of outgoing email and match replies to the right lead.",
+    "solution": "n8n calls OpenAI for a draft, checks the approval status before sending and stores the Gmail thread ID to match incoming replies.",
+    "outcome": "The workflow JSON includes setup instructions and a sample lead. Running the prototype requires Google and OpenAI credentials.",
+    "tags": [
+      "Email automation",
+      "Human review"
+    ],
+    "category": "Automation",
+    "featured": true,
+    "status": "Workflow prototype",
+    "year": "Current",
+    "tech": [
+      "n8n",
+      "OpenAI API",
+      "Google Sheets",
+      "Gmail"
+    ],
+    "github": "https://github.com/SaurabhPatelProgrammer/MyPortfolio/blob/main/public/workflows/Outreach-Studio.json",
+    "demo": null,
+    "image": "/images/placeholder.webp",
+    "accent": "#45d4b1",
+    "index": "01"
+  },
+  {
     "id": "shyra-ai",
     "title": "SHYRA",
     "eyebrow": "Public AI repository",
@@ -28,7 +57,7 @@
     "demo": "https://huggingface.co/spaces/saurabhpatelprogrammer/shyra-brain",
     "image": "/images/project-covers/shyra-cover-v1.webp",
     "accent": "#a78bfa",
-    "index": "01"
+    "index": "02"
   },
   {
     "id": "portfolio-v3",
@@ -59,7 +88,7 @@
     "demo": "https://saurabhpatel.vercel.app",
     "image": "/images/project-covers/portfolio-cover-v1.webp",
     "accent": "#fb7185",
-    "index": "02"
+    "index": "03"
   },
   {
     "id": "travel-itinerary-builder",
@@ -92,7 +121,7 @@
     "demo": "https://travel-bice-zeta.vercel.app",
     "image": "/images/project-covers/travel-cover-v1.webp",
     "accent": "#a78bfa",
-    "index": "03"
+    "index": "04"
   },
   {
     "id": "notes-marketplace",
@@ -121,7 +150,7 @@
     "demo": null,
     "image": "/images/noteselling.jpg",
     "accent": "#ffb45e",
-    "index": "04"
+    "index": "05"
   },
   {
     "id": "social-media-app",
@@ -150,7 +179,7 @@
     "demo": null,
     "image": "/images/socialmedia-optimized.jpg",
     "accent": "#ff6f91",
-    "index": "05"
+    "index": "06"
   },
   {
     "id": "about-day-app",
@@ -179,6 +208,6 @@
     "demo": null,
     "image": "/images/aboutday-optimized.jpg",
     "accent": "#45d4b1",
-    "index": "06"
+    "index": "07"
   }
 ]

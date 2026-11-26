@@ -2,7 +2,9 @@ import assert from 'node:assert/strict';
 import fs from 'node:fs';
 
 const projects = JSON.parse(fs.readFileSync('src/data/project-details.json', 'utf8'));
-assert.equal(projects.length, 6, 'All six original projects must be retained');
+for (const id of ["shyra-ai", "portfolio-v3", "travel-itinerary-builder", "notes-marketplace", "social-media-app", "about-day-app"]) {
+  assert(projects.some(project => project.id === id), `Missing original project: ${id}`);
+}
 assert.equal(new Set(projects.map(p => p.id)).size, projects.length);
 for (const p of projects) {
   assert(fs.existsSync(`public${p.image}`), `Missing project image: ${p.image}`);
@@ -22,4 +24,4 @@ for (const file of htmlFiles) {
     assert(fs.existsSync(`public${url}`) || fs.existsSync(`public${url}.html`), `Broken asset or page in ${file}: ${url}`);
   }
 }
-console.log('Content checks passed: six projects, original details, images, resume and local HTML links.');
+console.log('Content checks passed: projects, original details, images, resume and local HTML links.');
